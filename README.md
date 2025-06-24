@@ -1,33 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+---
 
-First, run the development server:
+## 🚀 Features
+
+✅ Secure JWT Authentication (Login / Signup)  
+✅ Staff Role-Based Access Control  
+✅ Booking Management System  
+✅ Booking Calendar Integration  
+✅ Real-Time Date Filtering & Display  
+✅ Fully Responsive UI with Tailwind CSS  
+✅ MongoDB + Mongoose for Database  
+✅ Protected Routes using Middleware
+
+---
+
+## 🛠️ Tech Stack
+
+| Tool         | Purpose                                |
+|--------------|----------------------------------------|
+| Next.js 15   | React Framework & App Router           |
+| React 19     | Frontend UI                            |
+| Tailwind CSS | Styling                                |
+| JWT          | Authentication                         |
+| MongoDB      | Database                               |
+| Mongoose     | ODM for MongoDB                        |
+| bcryptjs     | Password Hashing                       |
+| date-fns     | Date Manipulation                      |
+| Lucide React | Icon Set                               |
+
+---
+
+## 📦 Installation
+
+> Make sure Node.js & MongoDB are installed on your system.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+git clone https://github.com/your-username/channel-manager.git
+cd channel-manager
+npm install
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
 ## Deploy on Vercel
 
