@@ -6,8 +6,8 @@ A full-stack **Hotel Channel Manager** web application that helps admin efficien
 ## Table of Contents
 - [Features](#features)
 - [Tech Stack](#tech-stack)
-- [Deployment](#deployment)
-- [Feedback](#feedback)
+- [Getting Started](#getting-startedt)
+
 
 ## Features
 
@@ -74,13 +74,5 @@ JWT_SECRET=your_secret_key
 
 
 
-
-## Environment Variables
-
-To run this project, you will need to add the following environment variables to your .env file
-
-MONGODB_URI=your_mongodb_connection_string
-
-JWT_SECRET=your_secret_key
 
 
