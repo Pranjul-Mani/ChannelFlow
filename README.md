@@ -50,7 +50,7 @@ A full-stack **Hotel Channel Manager** web application that helps admin efficien
 ```bash
 git clone https://github.com/your-username/channelmanager.git
 
-cd ChannelManager
+cd channelmanager
 ```
 
 ### 2. Config Environment Variables
@@ -58,6 +58,7 @@ cd ChannelManager
 #### To run this project, you will need to add the following environment variables to your .env file
 
 MONGODB_URI=your_mongodb_connection_string
+
 JWT_SECRET=your_secret_key
 
 ### 3. Install dependencies
