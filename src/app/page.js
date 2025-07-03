@@ -1,5 +1,11 @@
-import HotelChannelManager from "@/components/hotel-channel-manager"
+import HotelChannelManager from "@/components/channelmanager"
+
 
 export default function Page() {
-  return <HotelChannelManager />
+  return (
+
+    <div>
+      <HotelChannelManager />
+    </div>
+  )
 }

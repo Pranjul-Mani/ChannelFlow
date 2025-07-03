@@ -6,70 +6,15 @@ import Dashboard from "../components/dashboard"
 import Inventory from "../components/inventory"
 import CalendarView from "../components/calendar-view"
 import Bookings from "../components/bookings"
-// import NotificationsPanel from "./notifications-panel"
+
 
 const HotelChannelManager = () => {
   const [activeTab, setActiveTab] = useState("dashboard")
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split("T")[0])
-//   const [notifications, setNotifications] = useState([
-//     { id: 1, type: "warning", message: "Low inventory on Agoda for Dec 15-20", time: "2 mins ago" },
-//     { id: 2, type: "success", message: "Rate updated successfully on MakeMyTrip", time: "5 mins ago" },
-//     { id: 3, type: "info", message: "New booking received from Booking.com", time: "10 mins ago" },
-//   ])
+
 
   // Mock data for channels
-  const [channels] = useState([
-    {
-      id: 1,
-      name: "Agoda",
-      status: "connected",
-      bookings: 24,
-      revenue: 12500,
-      occupancy: 85,
-      color: "bg-blue-500",
-      lastSync: "2 mins ago",
-    },
-    {
-      id: 2,
-      name: "MakeMyTrip",
-      status: "connected",
-      bookings: 18,
-      revenue: 9800,
-      occupancy: 72,
-      color: "bg-red-500",
-      lastSync: "5 mins ago",
-    },
-    {
-      id: 3,
-      name: "Booking.com",
-      status: "connected",
-      bookings: 31,
-      revenue: 18200,
-      occupancy: 93,
-      color: "bg-blue-600",
-      lastSync: "1 min ago",
-    },
-    {
-      id: 4,
-      name: "Expedia",
-      status: "connected",
-      bookings: 15,
-      revenue: 8500,
-      occupancy: 68,
-      color: "bg-yellow-500",
-      lastSync: "3 mins ago",
-    },
-    {
-      id: 5,
-      name: "Hotels.com",
-      status: "error",
-      bookings: 0,
-      revenue: 0,
-      occupancy: 0,
-      color: "bg-purple-500",
-      lastSync: "Failed",
-    },
-  ])
+  const [channels] = useState([])
 
   const [roomTypes] = useState([
     { id: 1, name: "Deluxe Room", inventory: 15, price: 120, channels: ["Agoda", "Booking.com", "MakeMyTrip"] },
@@ -103,19 +48,7 @@ const HotelChannelManager = () => {
           React.createElement(
             "div",
             { className: "flex items-center space-x-4" },
-            // React.createElement(
-            //   "div",
-            //   { className: "relative" },
-            //   React.createElement(Bell, { className: "h-6 w-6 text-gray-600 cursor-pointer" }),
-            //   React.createElement(
-            //     "span",
-            //     {
-            //       className:
-            //         "absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center",
-            //     },
-            //     notifications.length,
-            //   ),
-            // ),
+            
             React.createElement(
               "div",
               {
@@ -242,8 +175,7 @@ const HotelChannelManager = () => {
       ),
     ),
 
-    // Notifications Panel
-    // React.createElement(NotificationsPanel, { notifications }),
+    
   )
 }
 
