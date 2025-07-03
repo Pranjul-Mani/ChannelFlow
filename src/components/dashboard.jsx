@@ -10,7 +10,7 @@ const Dashboard = () => {
     try {
       setLoading(true);
       const response = await fetch('/api/dashboard');
-      console.log(response);
+      // console.log(response);
 
       const result = await response.json();
 

@@ -32,7 +32,7 @@ export default function Component() {
                 const res = await fetch("/api/room");
                 if (res.ok) {
                     const data = await res.json();
-                    console.log("Fetched Rooms:", data.data);
+                    // console.log("Fetched Rooms:", data.data);
                     if (data.success) {
                         // Filter rooms that are available
                         const availableRooms = data.data.filter((room) => room.isAvailable === true);
@@ -159,7 +159,7 @@ export default function Component() {
                                         <Label>Check-in Date</Label>
                                         <Popover>
                                             <PopoverTrigger asChild>
-                                                <Button variant="outline" className="w-full justify-start text-left font-normal bg-transparent">
+                                                <Button variant="outline" className="cursor-pointer w-full justify-start text-left font-normal bg-transparent">
                                                     <CalendarIcon className="mr-2 h-4 w-4" />
                                                     {checkIn ? format(checkIn, "PPP") : "Select date"}
                                                 </Button>
@@ -173,7 +173,7 @@ export default function Component() {
                                         <Label>Check-out Date</Label>
                                         <Popover>
                                             <PopoverTrigger asChild>
-                                                <Button variant="outline" className="w-full justify-start text-left font-normal bg-transparent">
+                                                <Button variant="outline" className="cursor-pointer w-full justify-start text-left font-normal bg-transparent">
                                                     <CalendarIcon className="mr-2 h-4 w-4" />
                                                     {checkOut ? format(checkOut, "PPP") : "Select date"}
                                                 </Button>
@@ -195,7 +195,7 @@ export default function Component() {
                                                 size="sm"
                                                 onClick={handleGuestDecrement}
                                                 disabled={guests <= 1}
-                                                className="w-8 h-8 p-0"
+                                                className="cursor-pointer w-8 h-8 p-0"
                                             >
                                                 <Minus className="h-4 w-4" />
                                             </Button>
@@ -208,7 +208,7 @@ export default function Component() {
                                                 size="sm"
                                                 onClick={handleGuestIncrement}
                                                 // disabled={guests >= 6}
-                                                className="w-8 h-8 p-0"
+                                                className="cursor-pointer w-8 h-8 p-0"
                                             >
                                                 <Plus className="h-4 w-4" />
                                             </Button>
@@ -216,8 +216,8 @@ export default function Component() {
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="roomType">Room Type</Label>
-                                        <Select value={selectedRoomType} onValueChange={setSelectedRoomType}>
-                                            <SelectTrigger>
+                                        <Select value={selectedRoomType} onValueChange={setSelectedRoomType} >
+                                            <SelectTrigger className="cursor-pointer">
                                                 <SelectValue placeholder="Select room type" />
                                             </SelectTrigger>
                                             <SelectContent>

@@ -121,7 +121,7 @@ export default function RoomMain() {
     try {
       const res = await fetch("/api/room");
       const data = await res.json();
-      console.log("rooms", data);
+      // console.log("rooms", data);
 
       if (data.success) {
         setRooms(data.data || []);
@@ -140,7 +140,7 @@ export default function RoomMain() {
     try {
       const res = await fetch("/api/category");
       const data = await res.json();
-      console.log("categories", data);
+      // console.log("categories", data);
 
       setCategories(data || []);
     } catch (err) {

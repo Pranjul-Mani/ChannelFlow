@@ -25,15 +25,17 @@ const CalendarView = () => {
       const allBookingsData = await allBookingsResponse.json();
 
       if (allBookingsData.success) {
-        const uniqueRoomTypes = [...new Set(allBookingsData.bookings.map(b => b.roomType))];
+        // Extract unique room types using the room name
+        const uniqueRoomTypes = [...new Set(allBookingsData.bookings.map(b => b.roomType?.name || 'Unknown'))];
         setRoomTypes([
           { value: 'all', label: 'All Rooms' },
-          ...uniqueRoomTypes.map(type => ({ value: type, label: type }))
+          ...uniqueRoomTypes.map((typeName, index) => ({ value: typeName, label: typeName }))
         ]);
 
+        // Filter bookings by room type name
         const filteredBookings = roomType === 'all'
           ? allBookingsData.bookings
-          : allBookingsData.bookings.filter(booking => booking.roomType === roomType);
+          : allBookingsData.bookings.filter(booking => booking.roomType?.name === roomType);
 
         setBookings(filteredBookings);
       } else {
@@ -66,30 +68,29 @@ const CalendarView = () => {
   };
 
   const getRooms = () => {
-    const rooms = [...new Set(bookings.map(booking => booking.roomType))].sort();
+    // Get unique room names and sort them
+    const rooms = [...new Set(bookings.map(booking => booking.roomType?.name || 'Unknown'))].sort();
     return roomType === 'all' ? rooms : rooms.filter(room => room === roomType);
   };
 
   const sourceColors = {
     'MMT': 'bg-red-500',
-    'Expedia': 'bg-yellow-500',
+    'booking engine': 'bg-yellow-500',
     'Agoda': 'bg-green-500',
-    'Booking.com': 'bg-purple-500',
-    'Cleartrip': 'bg-pink-500',
-    'Walk-In': 'bg-gray-500',
+    'walk-in': 'bg-pink-500',
   };
 
   const statusColors = {
-    'confirmed': 'bg-blue-400',
-    'checked-in': 'bg-green-400',
+    'confirmed': 'bg-green-400',
+    'checked-in': 'bg-blue-400',
     'checked-out': 'bg-gray-400',
     'cancelled': 'bg-red-400',
     'pending': 'bg-yellow-400'
   };
 
   const getBookingStyle = (booking, days) => {
-    const startDate = new Date(booking.arrivalDate);
-    const endDate = new Date(booking.departureDate);
+    const startDate = new Date(booking.checkInDate);
+    const endDate = new Date(booking.checkOutDate);
     const monthStart = days[0];
     const monthEnd = days[days.length - 1];
 
@@ -110,7 +111,7 @@ const CalendarView = () => {
   };
 
   const getBookingsForRoom = (room) => {
-    return bookings.filter(booking => booking.roomType === room);
+    return bookings.filter(booking => booking.roomType?.name === room);
   };
 
   const formatDate = (dateString) => {
@@ -139,8 +140,7 @@ const CalendarView = () => {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-300 overflow-hidden">
-      {/* Header */}
+    <div className="bg-white rounded-lg shadow-sm border border-gray-300 ">
       <div className="p-2 border-b border-gray-300">
         <div className="flex items-center justify-between flex-wrap gap-2">
           <div className="flex items-center space-x-4">
@@ -164,8 +164,8 @@ const CalendarView = () => {
               onChange={(e) => setRoomType(e.target.value)}
               className="text-sm px-3 py-1.5 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
             >
-              {roomTypes.map((type) => (
-                <option key={type.value} value={type.value}>{type.label}</option>
+              {roomTypes.map((type, index) => (
+                <option key={`${type.value}-${index}`} value={type.value}>{type.label}</option>
               ))}
             </select>
           </div>
@@ -173,7 +173,6 @@ const CalendarView = () => {
         <div className="mt-3 text-sm text-gray-600">Total bookings this month: {bookings.length}</div>
       </div>
 
-      {/* Calendar Header */}
       <div className="flex border-b border-gray-500">
         <div className="w-32 p-2 bg-gray-100 border-r border-gray-500 font-semibold text-sm text-gray-800">
           Room Type
@@ -194,13 +193,12 @@ const CalendarView = () => {
         </div>
       </div>
 
-      {/* Calendar Rows */}
       <div className="divide-y divide-gray-300">
-        {rooms.map((room) => {
+        {rooms.map((room, index) => {
           const roomBookings = getBookingsForRoom(room);
           return (
-            <div key={room} className="flex min-h-16">
-              <div className="w-32 p-3 bg-gray-50 border-r border-gray-500 flex ">
+            <div key={`${room}-${index}`} className="flex min-h-16">
+              <div className="w-32 p-3 bg-gray-50 border-r border-gray-500 flex">
                 <div className="text-sm font-medium text-gray-800 break-words leading-tight" title={room}>{room}</div>
               </div>
 
@@ -211,7 +209,6 @@ const CalendarView = () => {
                   ))}
                 </div>
 
-                {/* Bookings */}
                 <div className="relative p-1 min-h-16">
                   {roomBookings.map((booking, index) => {
                     const style = getBookingStyle(booking, calendarDays);
@@ -221,21 +218,20 @@ const CalendarView = () => {
                     return (
                       <div
                         key={`${booking.id}-${index}`}
-                        className={`absolute top-1 h-10 ${sourceColor} text-white text-xs rounded px-2 py-1 cursor-pointer hover:shadow-lg transition-all duration-200 z-10 flex items-center justify-between group`}
+                        className={`absolute top-1 h-10 ${statusColor} text-white text-xs rounded px-2 py-1 cursor-pointer hover:shadow-lg transition-all duration-200 z-10 flex items-center justify-between group`}
                         style={style}
                       >
                         <div className="font-medium truncate pr-2">{booking.customerName}</div>
-                        <div className={`w-3 h-3 ${statusColor} rounded-full flex-shrink-0 border border-black`}></div>
+                        <div className={`w-3 h-3 ${sourceColor} rounded-full flex-shrink-0 border border-black`}></div>
 
-                        {/* Tooltip */}
                         <div className="absolute bottom-full left-0 mb-2 w-64 bg-black bg-opacity-90 text-white text-xs rounded-lg p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-20 shadow-xl">
                           <div className="space-y-1">
                             <div className="font-semibold">{booking.customerName}</div>
                             <div className="flex justify-between"><span className="text-gray-300">Source:</span><span>{booking.source}</span></div>
                             <div className="flex justify-between"><span className="text-gray-300">Status:</span><span className="capitalize">{booking.status}</span></div>
-                            <div className="flex justify-between"><span className="text-gray-300">Check-in:</span><span>{formatDate(booking.arrivalDate)}</span></div>
-                            <div className="flex justify-between"><span className="text-gray-300">Check-out:</span><span>{formatDate(booking.departureDate)}</span></div>
-                            <div className="flex justify-between"><span className="text-gray-300">Room:</span><span>{booking.roomType}</span></div>
+                            <div className="flex justify-between"><span className="text-gray-300">Check-in:</span><span>{formatDate(booking.checkInDate)}</span></div>
+                            <div className="flex justify-between"><span className="text-gray-300">Check-out:</span><span>{formatDate(booking.checkOutDate)}</span></div>
+                            <div className="flex justify-between"><span className="text-gray-300">Room:</span><span>{booking.roomType?.name || 'N/A'}</span></div>
                           </div>
                           <div className="absolute top-full left-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-black opacity-90"></div>
                         </div>
@@ -249,7 +245,6 @@ const CalendarView = () => {
         })}
       </div>
 
-      {/* Legend */}
       <div className="p-4 border-t border-gray-300 bg-gray-50">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
           <div className="flex flex-col items-center">
