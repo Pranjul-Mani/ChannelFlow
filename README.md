@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+# Channel Manager
+
+A full-stack **Hotel Channel Manager** web application that helps admin efficiently manage room bookings, staff access, and a real-time booking calendar. Built with **Next.js 15**, **React 19**, and **MongoDB**, this system allows seamless administration with secure JWT authentication and role-based access for staff and admins.
+
+## Table of Contents
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Getting Started](#getting-startedt)
+
+
+## Features
+
+-  **JWT Authentication**: Secure login/signup for admins and staff
+-  **Role-Based Access**: Admin vs Staff permissions
+-  **Real-Time Booking Calendar**: Visualize bookings from check-in to check-out
+-  **Booking Management**: Add, view, edit, and categorize room bookings
+-  **Staff Management**: Add and manage staff users
+-  **MongoDB Integration**: Store and fetch live booking and user data
+-  **Protected Routes**: Automatic redirection for unauthorized users using middleware
+
+
+
+## Tech Stack
+
+### Frontend
+- **Next.js 15** – Modern React framework
+- **React 19** – Declarative UI components
+- **Tailwind CSS** – Utility-first styling
+- **Lucide React** – Icon library
+
+### Backend
+- **Next.js API Routes** – Serverless backend functions
+- **JWT (jsonwebtoken)** – Token-based authentication
+- **bcryptjs** – Password hashing
+- **Middleware** – Route protection and token validation
+
+### Database
+- **MongoDB** – NoSQL database
+
+### Authentication & Security
+- JWT tokens stored via `httpOnly cookies` or `localStorage`
+- Middleware guards for protected routes
+- Passwords hashed securely before storing in DB
+
 
 ## Getting Started
-
-First, run the development server:
+### 1. Clone the Repository
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/your-username/channelmanager.git
+
+cd channelmanager
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Config Environment Variables
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+#### To run this project, you will need to add the following environment variables to your .env file
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+MONGODB_URI=your_mongodb_connection_string
 
-## Learn More
+JWT_SECRET=your_secret_key
 
-To learn more about Next.js, take a look at the following resources:
+### 3. Install dependencies
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+  npm install
+```
+    
+### 4. Start the server
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+  npm run dev
+```
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
