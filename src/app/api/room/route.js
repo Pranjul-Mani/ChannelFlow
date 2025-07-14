@@ -96,11 +96,31 @@ export async function POST(request) {
     await connectDB();
     
     const body = await request.json();
-    const {roomId, name, description, noOfRoom, location, category, images, price, bed, isAvailable, amenities } = body;
+    const {
+      roomId,
+      name,
+      description,
+      noOfRoom,
+      location,
+      category,
+      images,
+      price,
+      bed,
+      isAvailable,
+      amenities,
+      floor // ✅ Added floor
+    } = body;
 
-    
     // Validation
-    if (!roomId || !name || !category || !images || !price || !bed) {
+    if (
+      !roomId ||
+      !name ||
+      !category ||
+      !images ||
+      !price ||
+      !bed ||
+      floor === undefined // ✅ Validate floor
+    ) {
       return NextResponse.json(
         { success: false, error: "Please fill all required fields" },
         { status: 400 }
@@ -127,6 +147,7 @@ export async function POST(request) {
       category,
       noOfRoom,
       location,
+      floor, // ✅ Include floor
       images,
       amenities: processedAmenities,
       price: parseFloat(price),
@@ -152,6 +173,7 @@ export async function POST(request) {
     );
   }
 }
+
 
 // PUT - Update room
 export async function PUT(request) {

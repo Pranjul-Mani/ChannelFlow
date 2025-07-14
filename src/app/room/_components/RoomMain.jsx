@@ -21,11 +21,14 @@ export default function RoomMain() {
     noOfRoom: "",
     location: "",
     category: "",
+    floor: "",
     amenities: "",
     images: [""],
     price: "",
+    gst: "",
     bed: "",
     isAvailable: true,
+    balcony: true,
   });
 
   // Category form data - separate from room form data
@@ -56,16 +59,16 @@ export default function RoomMain() {
   const [floorError, setFloorError] = useState("");
   const [floorSuccess, setFloorSuccess] = useState("");
 
-  const [selectedCategory, setSelectedCategory] = useState(null)
+  // const [selectedCategory, setSelectedCategory] = useState(null)
 
   // Mock data
-  const channel = [
-    { id: "booking-engine", name: "Booking Engine", icon: "🏨" },
-    { id: "booking-com", name: "Booking.com", icon: "🌐" },
-    { id: "mmt", name: "MMT", icon: "✈️" },
-    { id: "agoda", name: "Agoda", icon: "✈️" },
-    { id: "cleartrip", name: "ClearTrip", icon: "✈️" },
-  ]
+  // const channel = [
+  //   { id: "booking-engine", name: "Booking Engine", icon: "🏨" },
+  //   { id: "booking-com", name: "Booking.com", icon: "🌐" },
+  //   { id: "mmt", name: "MMT", icon: "✈️" },
+  //   { id: "agoda", name: "Agoda", icon: "✈️" },
+  //   { id: "cleartrip", name: "ClearTrip", icon: "✈️" },
+  // ]
 
   useEffect(() => {
     fetchRooms();
@@ -534,18 +537,18 @@ export default function RoomMain() {
 
 
 
-              <Link
+              {/* <Link
                 href="/room/import"
                 className="flex items-center cursor-pointer px-4 py-2 bg-purple-600 text-white rounded-lg shadow-md hover:bg-purple-700 transition-colors"
               >
                 <File size={18} className="mr-2" />
                 Bulk Import
-              </Link>
+              </Link> */}
             </div>
           )}
         </header>
 
-        <Card className="mb-6">
+        {/* <Card className="mb-6">
           <CardHeader>
             <CardTitle>Channel Categories</CardTitle>
           </CardHeader>
@@ -568,7 +571,7 @@ export default function RoomMain() {
               ))}
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
 
         {/* Floor Error/Success Messages */}
         {floorError && (
@@ -1043,6 +1046,19 @@ export default function RoomMain() {
                       className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                     />
                   </div>
+                  {/* GST  */}
+                  <input
+                    type="number"
+                    name="gst"
+                    value={formData.gst === "" ? "" : Number(formData.gst)}
+                    onChange={handleChange}
+                    placeholder="Enter GST"
+                    required
+                    min="0"
+                    step="0.01"
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                  />
+
 
                   {/* Number of Rooms */}
                   <div>
@@ -1099,22 +1115,64 @@ export default function RoomMain() {
                     </select>
                   </div>
 
-                  {/* Availability */}
-                  <div className="md:col-span-2">
+                  {/* floor */}
+                  <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Availability
+                      Floors *
                     </label>
-                    <div className="flex items-center">
-                      <input
-                        type="checkbox"
-                        name="isAvailable"
-                        checked={formData.isAvailable}
-                        onChange={handleChange}
-                        className="h-5 w-5 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-                      />
-                      <span className="ml-2">
-                        {formData.isAvailable ? "Available" : "Not Available"}
-                      </span>
+                    <select
+                      name="floor"
+                      value={formData.floor}
+                      onChange={handleChange}
+                      required
+                      className="w-full p-3 border cursor-pointer border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                    >
+                      <option value="">Select Floor</option>
+                      {floors.map((cat) => (
+                        <option key={cat._id} value={cat._id}>
+                          {cat.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="flex flex-col md:flex-row gap-6 md:gap-4">
+                    {/* Availability */}
+                    <div className="md:col-span-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Availability
+                      </label>
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          name="isAvailable"
+                          checked={formData.isAvailable}
+                          onChange={handleChange}
+                          className="h-5 w-5 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                        />
+                        <span className="ml-2">
+                          {formData.isAvailable ? "Available" : "Not Available"}
+                        </span>
+                      </div>
+                    </div>
+
+
+                    {/* balcony */}
+                    <div className="md:col-span-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Balcony
+                      </label>
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          name="balcony"
+                          checked={formData.balcony}
+                          onChange={handleChange}
+                          className="h-5 w-5 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                        />
+                        <span className="ml-2">
+                          {formData.balcony ? "Available" : "Not Available"}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1229,176 +1287,194 @@ export default function RoomMain() {
 
 
         {/* Room Management Table */}
-        {
-          selectedCategory && (
-            <Card>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle>{channel.find((c) => c.id === selectedCategory)?.name} - Room Management</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent>
-                {loading ? (
-                  <div className="p-8 text-center">
-                    <div className="inline-block w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-                    <p className="mt-2 text-gray-600">Loading rooms...</p>
-                  </div>
-                ) : rooms.length > 0 ? (
-                  <div className="overflow-x-auto">
-                    <table className="w-full divide-y divide-gray-200">
-                      <thead className="bg-gray-50">
-                        <tr>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Sr.N
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Room Id
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Room Name
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Category
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Price/Night
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            No of Rooms
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Beds
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Amenities
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Status
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Actions
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="bg-white divide-y divide-gray-200">
-                        {rooms.map((room, idx) => (
-                          <motion.tr
-                            key={room._id || room.id}
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: idx * 0.05 }}
-                            className="hover:bg-gray-50 transition-colors"
-                          >
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                              {idx + 1}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                              <div className="flex items-center">
-                                <Users size={16} className="mr-1 text-gray-400" />
-                                {room.roomId || "-"}
-                              </div>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="text-sm font-medium text-gray-900 capitalize">
-                                {room.name || room.roomName}
-                              </div>
-                              {/* {room.description && (
+
+        <Card>
+          {/* <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle>{channel.find((c) => c.id === selectedCategory)?.name} - Room Management</CardTitle>
+            </div>
+          </CardHeader> */}
+          <CardContent>
+            {loading ? (
+              <div className="p-8 text-center">
+                <div className="inline-block w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                <p className="mt-2 text-gray-600">Loading rooms...</p>
+              </div>
+            ) : rooms.length > 0 ? (
+              <div className="overflow-x-auto">
+                <table className="w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Sr.N
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Room Id
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Room Name
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Category
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Price/Night
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        No of Rooms
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Beds
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Amenities
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Status
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {rooms.map((room, idx) => (
+                      <motion.tr
+                        key={room._id || room.id}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: idx * 0.05 }}
+                        className="hover:bg-gray-50 transition-colors"
+                      >
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                          {idx + 1}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          <div className="flex items-center">
+                            <Users size={16} className="mr-1 text-gray-400" />
+                            {room.roomId || "-"}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm font-medium text-gray-900 capitalize">
+                            {room.name || room.roomName}
+                          </div>
+                          {/* {room.description && (
                                 <div className="text-sm text-gray-500 truncate max-w-xs">
                                   {room.description}
                                 </div>
                               )} */}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                              {room.category?.name || room.category || "-"}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                              {((room.price || room.pricePerNight) || 0).toLocaleString("en-IN", {
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {room.category?.name || room.category || "-"}
+                          {/* {
+                                <div className="text-sm text-gray-500 truncate max-w-xs">
+                                  Floor: {room.floor?.name}
+                                </div>
+                              } */}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                          {((room.price || room.pricePerNight) || 0).toLocaleString("en-IN", {
+                            style: "currency",
+                            currency: "INR",
+                          })}
+                          <div className="text-sm text-gray-500 truncate max-w-xs">
+                            Inc. GST :
+
+                            <span className="font-medium text-gray-900">
+                              {(
+                                (room.price || 0) +
+                                ((room.price || 0) * (room.gst || 0)) / 100
+                              ).toLocaleString("en-IN", {
                                 style: "currency",
                                 currency: "INR",
                               })}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                              <div className="flex items-center">
-                                <Clock size={16} className="mr-1 text-gray-400" />
-                                {room.noOfRoom || room.noOfRooms || 1}
-                              </div>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                              <div className="flex items-center">
-                                <Bed size={16} className="mr-1 text-gray-400" />
-                                {room.bed || room.beds}
-                              </div>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                              <div className="max-w-xs">
-                                {room.amenities && Array.isArray(room.amenities) && room.amenities.length > 0
-                                  ? (
-                                    <div className="truncate" title={room.amenities.join(", ")}>
-                                      {room.amenities.join(", ")}
-                                    </div>
-                                  )
-                                  : <span className="text-gray-400 italic">No amenities</span>
-                                }
-                              </div>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <button
-                                onClick={() => handleToggleAvailability(room._id || room.id)}
-                                className={`px-3 py-1 text-xs font-medium rounded-full transition-colors ${(room.isAvailable !== undefined ? room.isAvailable : room.status === 'Available')
-                                  ? "bg-green-100 text-green-800 hover:bg-green-200"
-                                  : "bg-red-100 text-red-800 hover:bg-red-200"
-                                  }`}
-                              >
-                                {(room.isAvailable !== undefined ? room.isAvailable : room.status === 'Available')
-                                  ? "Available"
-                                  : "Unavailable"}
-                              </button>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                              <div className="flex space-x-2">
-                                <button
-                                  onClick={() => handleEdit(room)}
-                                  className="text-blue-600 hover:text-blue-900 cursor-pointer flex items-center transition-colors"
-                                  title="Edit"
-                                >
-                                  <Edit size={18} />
-                                </button>
-                                <button
-                                  onClick={() => handleDelete(room)}
-                                  className="text-red-600 cursor-pointer hover:text-red-900 flex items-center transition-colors"
-                                  title="Delete"
-                                >
-                                  <Trash2 size={18} />
-                                </button>
-                              </div>
-                            </td>
-                          </motion.tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                ) : (
-                  <div className="p-8 text-center">
-                    <div className="mx-auto h-24 w-24 text-gray-400 mb-4">
-                      <Bed size={96} />
-                    </div>
-                    <p className="text-gray-500 text-lg font-medium">No rooms found.</p>
-                    <p className="text-sm text-gray-400 mt-1">
-                      Add your first room to get started.
-                    </p>
-                    <button
-                      onClick={() => setIsAdding(true)}
-                      className="mt-4 inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                    >
-                      <PlusCircle size={18} className="mr-2" />
-                      Add Your First Room
-                    </button>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          )
-        }
+                            </span>
+
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          <div className="flex items-center">
+                            <Clock size={16} className="mr-1 text-gray-400" />
+                            {room.noOfRoom || room.noOfRooms || 1}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          <div className="flex items-center">
+                            <Bed size={16} className="mr-1 text-gray-400" />
+                            {room.bed || room.beds}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          <div className="max-w-xs">
+                            {room.amenities && Array.isArray(room.amenities) && room.amenities.length > 0
+                              ? (
+                                <div className="truncate" title={room.amenities.join(", ")}>
+                                  {room.amenities.join(", ")}
+                                </div>
+                              )
+                              : <span className="text-gray-400 italic">No amenities</span>
+                            }
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <button
+                            onClick={() => handleToggleAvailability(room._id || room.id)}
+                            className={`px-3 py-1 text-xs font-medium rounded-full transition-colors ${(room.isAvailable !== undefined ? room.isAvailable : room.status === 'Available')
+                              ? "bg-green-100 text-green-800 hover:bg-green-200"
+                              : "bg-red-100 text-red-800 hover:bg-red-200"
+                              }`}
+                          >
+                            {(room.isAvailable !== undefined ? room.isAvailable : room.status === 'Available')
+                              ? "Available"
+                              : "Unavailable"}
+                          </button>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          <div className="flex space-x-2">
+                            <button
+                              onClick={() => handleEdit(room)}
+                              className="text-blue-600 hover:text-blue-900 cursor-pointer flex items-center transition-colors"
+                              title="Edit"
+                            >
+                              <Edit size={18} />
+                            </button>
+                            <button
+                              onClick={() => handleDelete(room)}
+                              className="text-red-600 cursor-pointer hover:text-red-900 flex items-center transition-colors"
+                              title="Delete"
+                            >
+                              <Trash2 size={18} />
+                            </button>
+                          </div>
+                        </td>
+                      </motion.tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div className="p-8 text-center">
+                <div className="mx-auto h-24 w-24 text-gray-400 mb-4">
+                  <Bed size={96} />
+                </div>
+                <p className="text-gray-500 text-lg font-medium">No rooms found.</p>
+                <p className="text-sm text-gray-400 mt-1">
+                  Add your first room to get started.
+                </p>
+                <button
+                  onClick={() => setIsAdding(true)}
+                  className="mt-4 inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  <PlusCircle size={18} className="mr-2" />
+                  Add Your First Room
+                </button>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+
       </div >
     </div >
   );

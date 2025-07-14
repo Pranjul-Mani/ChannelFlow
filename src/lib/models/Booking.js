@@ -27,6 +27,12 @@ const BookingSchema = new mongoose.Schema({
     default: 1,
     min: 1
   },
+  numberOfRooms: {
+    type: Number,
+    default: 1,
+    min: 1,
+    required: true
+  },
   roomType: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Room",

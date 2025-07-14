@@ -24,18 +24,7 @@ const LoginForm = ({ onToggleForm }) => {
     }
   }, [user, router])
 
-  // Load remembered email on component mount
-  // useEffect(() => {
-  //   const rememberedEmail = localStorage.getItem('rememberUser')
-  //   if (rememberedEmail) {
-  //     setFormData(prev => ({
-  //       ...prev,
-  //       email: rememberedEmail
-  //     }))
-  //     setRememberMe(true)
-  //   }
-  // }, [])
-
+ 
   // Auto-redirect to signup if user not found
   useEffect(() => {
     if (error && (
@@ -68,13 +57,6 @@ const LoginForm = ({ onToggleForm }) => {
     const result = await login(formData.email, formData.password)
 
     if (result.success) {
-      // Handle remember me
-      // if (rememberMe) {
-      //   localStorage.setItem('rememberUser', formData.email)
-      // } else {
-      //   localStorage.removeItem('rememberUser')
-      // }
-
       // Redirect to dashboard after successful login
       router.push('/')
     }
@@ -201,7 +183,7 @@ const LoginForm = ({ onToggleForm }) => {
         </form>
 
         {/* Sign Up Link */}
-        {/* <div className="mt-6 text-center">
+        <div className="mt-6 text-center">
           <p className="text-gray-600">
             Don't have an account?{' '}
             <button
@@ -212,7 +194,7 @@ const LoginForm = ({ onToggleForm }) => {
               Sign up
             </button>
           </p>
-        </div> */}
+        </div>
       </div>
     </div>
   )

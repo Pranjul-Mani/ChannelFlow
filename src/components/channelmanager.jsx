@@ -21,11 +21,6 @@ const HotelChannelManager = () => {
   // Mock data for channels
   const [channels] = useState([])
 
-  const [roomTypes] = useState([
-    { id: 1, name: "Deluxe Room", inventory: 15, price: 120, channels: ["Agoda", "Booking.com", "MakeMyTrip"] },
-    { id: 2, name: "Suite", inventory: 8, price: 200, channels: ["Agoda", "Booking.com", "Expedia"] },
-    { id: 3, name: "Standard Room", inventory: 25, price: 80, channels: ["All Channels"] },
-  ])
 
   // Navigation items
   const navItems = [
@@ -33,8 +28,7 @@ const HotelChannelManager = () => {
     { id: "reservation", label: "Reservation", icon: BedDouble },
     { id: "inventory", label: "Inventory & Rates", icon: Calendar },
     { id: "calendar", label: "Calendar", icon: Calendar },
-    // { id: "bookings", label: "Bookings", icon: Users },
-    { id: "restaurant", label: "Restaurant", icon: Utensils	, external: true, route: "https://res1.hotelmoksha.in/login" },
+    { id: "bookings", label: "Bookings", icon: Users },
   ]
 
   const adminMenuItems = [
@@ -87,11 +81,9 @@ const HotelChannelManager = () => {
       case "calendar":
         return <CalendarView />
       case "inventory":
-        return <Inventory roomTypes={roomTypes} selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
-      // case "bookings":
-      //   return <Bookings />
-      case "restaurant":
-        return null
+        return <Inventory />
+      case "bookings":
+        return <Bookings />
       default:
         return <Dashboard channels={channels} />
     }

@@ -17,6 +17,11 @@ const roomSchema = new mongoose.Schema({
     ref: "Category",
     required: true,
   },
+  floor: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Floor",
+    required: true,
+  },
   images: {
     type: [String],
     required: true,
@@ -27,6 +32,10 @@ const roomSchema = new mongoose.Schema({
   },
   location: {
     type: String,
+  },
+  gst: {
+    type: Number,
+    default: 0,
   },
   amenities: {
     type: [String],
@@ -41,6 +50,10 @@ const roomSchema = new mongoose.Schema({
     required: true,
   },
   isAvailable: {
+    type: Boolean,
+    default: true,
+  },
+  balcony: {
     type: Boolean,
     default: true,
   },
