@@ -1,13 +1,13 @@
 
-import ProductImportPage from "./_components/Import";
+// import ProductImportPage from "./_components/Import";
 
 
-export default function ImportPage() {
+// export default function ImportPage() {
 
 
-  return (
-    <>
-    <ProductImportPage/>
-    </>
-  );
-}
+//   return (
+//     <>
+//     <ProductImportPage/>
+//     </>
+//   );
+// }
