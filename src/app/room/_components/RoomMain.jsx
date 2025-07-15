@@ -537,13 +537,13 @@ export default function RoomMain() {
 
 
 
-              {/* <Link
+              <Link
                 href="/room/import"
                 className="flex items-center cursor-pointer px-4 py-2 bg-purple-600 text-white rounded-lg shadow-md hover:bg-purple-700 transition-colors"
               >
                 <File size={18} className="mr-2" />
                 Bulk Import
-              </Link> */}
+              </Link>
             </div>
           )}
         </header>
@@ -1047,17 +1047,22 @@ export default function RoomMain() {
                     />
                   </div>
                   {/* GST  */}
-                  <input
-                    type="number"
-                    name="gst"
-                    value={formData.gst === "" ? "" : Number(formData.gst)}
-                    onChange={handleChange}
-                    placeholder="Enter GST"
-                    required
-                    min="0"
-                    step="0.01"
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                  />
+                   <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      GST in Percentage*
+                    </label>
+                    <input
+                      type="number"
+                      name="gst"
+                      value={formData.gst}
+                      onChange={handleChange}
+                      placeholder="Enter price"
+                      required
+                      min="0"
+                      step="0.01"
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                    />
+                  </div>
 
 
                   {/* Number of Rooms */}

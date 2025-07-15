@@ -140,7 +140,7 @@ const CalendarView = () => {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-300 ">
+    <div className="bg-white rounded-lg shadow-sm border border-gray-300 overflow-hidden">
       <div className="p-2 border-b border-gray-300">
         <div className="flex items-center justify-between flex-wrap gap-2">
           <div className="flex items-center space-x-4">

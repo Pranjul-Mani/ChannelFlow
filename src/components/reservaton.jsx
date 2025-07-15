@@ -67,17 +67,17 @@ export default function Component() {
         }
     }
 
-    const handleRoomIncrement = () => {
-        if (selectedRoomData && Number(numberOfRooms) < selectedRoomData.noOfRoom) {
-            setNumberOfRooms(Number(numberOfRooms) + 1)
-        }
-    }
+    // const handleRoomIncrement = () => {
+    //     if (selectedRoomData && Number(numberOfRooms) < selectedRoomData.noOfRoom) {
+    //         setNumberOfRooms(Number(numberOfRooms) + 1)
+    //     }
+    // }
 
-    const handleRoomDecrement = () => {
-        if (Number(numberOfRooms) > 1) {
-            setNumberOfRooms(Number(numberOfRooms) - 1)
-        }
-    }
+    // const handleRoomDecrement = () => {
+    //     if (Number(numberOfRooms) > 1) {
+    //         setNumberOfRooms(Number(numberOfRooms) - 1)
+    //     }
+    // }
 
     const handleRoomTypeChange = (value) => {
         setSelectedRoomType(value)

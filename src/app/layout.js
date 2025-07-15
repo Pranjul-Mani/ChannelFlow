@@ -6,6 +6,10 @@ import { AuthProvider } from '../lib/AuthContext';
 export const metadata = {
   title: "Channel Manager",
   description: "",
+  icons: {
+    icon: "/logo.png", // Can be .png or .svg too
+  },
+
 };
 
 export default function RootLayout({ children }) {
