@@ -1,7 +1,7 @@
 
 # Channel Manager
 
-A full-stack **Hotel Channel Manager** web application that helps admin efficiently manage room bookings, staff access, and a real-time booking calendar. Built with **Next.js 15**, **React 19**, and **MongoDB**, this system allows seamless administration with secure JWT authentication and role-based access for staff and admins.
+A full-stack **Hotel Channel Manager** web application that helps admin efficiently manage room bookings, staff access, and a real-time booking calendar. Built with **Next.js 15**, **React 19**, and **MongoDB**, this system allows seamless administration with secure JWT authentication.
 
 ## Table of Contents
 - [Features](#features)
