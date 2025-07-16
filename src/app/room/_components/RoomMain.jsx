@@ -537,13 +537,13 @@ export default function RoomMain() {
 
 
 
-              <Link
+              {/* <Link
                 href="/room/import"
                 className="flex items-center cursor-pointer px-4 py-2 bg-purple-600 text-white rounded-lg shadow-md hover:bg-purple-700 transition-colors"
               >
                 <File size={18} className="mr-2" />
                 Bulk Import
-              </Link>
+              </Link> */}
             </div>
           )}
         </header>
