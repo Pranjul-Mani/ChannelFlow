@@ -1,5 +1,5 @@
-import LandingPage from "@/components/landingPage"
-import HotelChannelManager from "@/components/channelmanager"
+import LandingPage from "@/components/landingpage"
+
 
 
 export default function Page() {
