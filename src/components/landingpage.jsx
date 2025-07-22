@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, BarChart, Zap, Globe, Shield, Calendar, BarChart3 } from "lucide-react";
 import { motion } from "framer-motion";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/navbar";
 
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
