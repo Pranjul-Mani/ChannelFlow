@@ -7,7 +7,7 @@ export const metadata = {
   title: "Channel Manager",
   description: "",
   icons: {
-    icon: "/logo.png", // Can be .png or .svg too
+    icon: "/logo.png", 
   },
 
 };

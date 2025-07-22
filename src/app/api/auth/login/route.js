@@ -1,7 +1,4 @@
-// 4. LOGIN API ROUTE
 // File: src/app/api/auth/login/route.js
-
-
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/utils/database';
 import User from '@/lib/models/User';
@@ -44,14 +41,14 @@ export async function POST(request) {
     user.lastLogin = new Date();
     await user.save();
 
-    // Generate JWT token
+    // Generate JWT token (without role)
     const token = generateToken({
       userId: user._id,
       email: user.email,
-      role: user.role
+      name: user.name
     });
 
-    // Return success response
+    // Return success response (without role)
     return NextResponse.json({
       message: 'Login successful',
       token,
@@ -59,7 +56,7 @@ export async function POST(request) {
         id: user._id,
         name: user.name,
         email: user.email,
-        role: user.role,
+        phone: user.phone
       }
     });
 

@@ -113,14 +113,23 @@ const authAPI = {
   },
 
   logout: async () => {
+    const token = localStorage.getItem('token')
     localStorage.removeItem('token')
+    localStorage.removeItem('user') // Remove user data too
+    
     // Optionally call logout endpoint
-    await fetch('/api/auth/logout', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
-      },
-    })
+    if (token) {
+      try {
+        await fetch('/api/auth/logout', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        })
+      } catch (error) {
+        console.error('Logout endpoint error:', error)
+      }
+    }
   }
 }
 
@@ -132,13 +141,30 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const userData = await authAPI.verifyToken()
-        if (userData) {
-          dispatch({ type: 'LOGIN_SUCCESS', payload: userData.user })
+        // First check if we have stored user data
+        const storedUser = localStorage.getItem('user')
+        const token = localStorage.getItem('token')
+        
+        if (storedUser && token) {
+          // Parse and use stored user data immediately
+          const userData = JSON.parse(storedUser)
+          dispatch({ type: 'LOGIN_SUCCESS', payload: userData })
         } else {
-          dispatch({ type: 'SET_LOADING', payload: false })
+          // If no stored data, try to verify token
+          const response = await authAPI.verifyToken()
+          if (response && response.user) {
+            // Store user data for persistence
+            localStorage.setItem('user', JSON.stringify(response.user))
+            dispatch({ type: 'LOGIN_SUCCESS', payload: response.user })
+          } else {
+            dispatch({ type: 'SET_LOADING', payload: false })
+          }
         }
       } catch (error) {
+        console.error('Auth check error:', error)
+        // Clear invalid data
+        localStorage.removeItem('token')
+        localStorage.removeItem('user')
         dispatch({ type: 'SET_LOADING', payload: false })
       }
     }
@@ -152,6 +178,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const data = await authAPI.login(email, password)
       localStorage.setItem('token', data.token)
+      localStorage.setItem('user', JSON.stringify(data.user)) // Store user data
       dispatch({ type: 'LOGIN_SUCCESS', payload: data.user })
       return { success: true }
     } catch (error) {
@@ -166,6 +193,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const data = await authAPI.signup(userData)
       localStorage.setItem('token', data.token)
+      localStorage.setItem('user', JSON.stringify(data.user)) // Store user data
       dispatch({ type: 'LOGIN_SUCCESS', payload: data.user })
       return { success: true }
     } catch (error) {
@@ -214,40 +242,23 @@ export const useAuth = () => {
   return context
 }
 
-// Role-based access control
+// Simplified permissions (removed role-based logic since roles are removed)
 export const usePermissions = () => {
   const { user } = useAuth()
   
   const permissions = {
-    // Admin permissions
-    admin: {
-      dashboard: { read: true, write: true },
-      inventory: { read: true, write: true },
-      calendar: { read: true, write: true },
-      bookings: { read: true, write: true, cancel: true },
-      settings: { read: true, write: true },
-      users: { read: true, write: true, delete: true },
-      reports: { read: true, write: true }
-    },
-    
-    // Staff permissions
-    staff: {
-      dashboard: { read: true, write: false },
-      inventory: { read: true, write: true },
-      calendar: { read: true, write: true },
-      bookings: { read: true, write: true, cancel: false },
-      settings: { read: false, write: false },
-      users: { read: false, write: false, delete: false },
-      reports: { read: true, write: false }
-    },
-    
-  
+    dashboard: { read: true, write: true },
+    inventory: { read: true, write: true },
+    calendar: { read: true, write: true },
+    bookings: { read: true, write: true, cancel: true },
+    settings: { read: true, write: true },
+    users: { read: true, write: true, delete: true },
+    reports: { read: true, write: true }
   }
   
   const hasPermission = (module, action) => {
     if (!user) return false
-    const userRole = user.role || 'staff'
-    return permissions[userRole]?.[module]?.[action] || false
+    return permissions[module]?.[action] || false
   }
   
   const canAccess = (module) => {
@@ -257,6 +268,6 @@ export const usePermissions = () => {
   return {
     hasPermission,
     canAccess,
-    userRole: user?.role || null
+    isAuthenticated: !!user
   }
 }

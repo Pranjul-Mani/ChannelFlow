@@ -119,3 +119,142 @@
   }
 }
 
+/* ============================================
+   CUSTOM ANIMATIONS (NOT AVAILABLE IN TAILWIND)
+   ============================================ */
+
+/* Infinite Scroll Animation */
+@keyframes infinite-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-infinite-scroll {
+  animation: infinite-scroll 25s linear infinite;
+}
+
+/* Star Animation Keyframes */
+@keyframes animStar {
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(-2000px);
+  }
+}
+
+/* Small Stars Layer */
+.stars {
+  width: 1px;
+  height: 1px;
+  background: transparent;
+  box-shadow: 
+    1541px 1715px #FFF, 1223px 300px #FFF, 1422px 1716px #FFF, 1550px 1312px #FFF, 
+    1830px 1805px #FFF, 1883px 1297px #FFF, 1599px 1840px #FFF, 1398px 1564px #FFF, 
+    1727px 1770px #FFF, 1870px 1043px #FFF, 1935px 1816px #FFF, 1310px 1820px #FFF, 
+    1283px 1617px #FFF, 1654px 1395px #FFF, 1905px 1678px #FFF, 1873px 1238px #FFF, 
+    1043px 1364px #FFF, 1949px 1628px #FFF, 1893px 1642px #FFF, 1431px 1557px #FFF,
+    945px 1403px #FFF, 1765px 1256px #FFF, 1324px 1893px #FFF, 1687px 1534px #FFF,
+    1432px 1789px #FFF, 1891px 1345px #FFF, 1234px 1567px #FFF, 1678px 1234px #FFF,
+    1456px 1890px #FFF, 1789px 1456px #FFF, 1234px 1678px #FFF, 1567px 1234px #FFF,
+    1890px 1456px #FFF, 1345px 1789px #FFF, 1678px 1567px #FFF, 1234px 1890px #FFF,
+    1456px 1345px #FFF, 1789px 1678px #FFF, 1567px 1890px #FFF, 1234px 1456px #FFF;
+  animation: animStar 50s linear infinite;
+}
+
+.stars:after {
+  content: " ";
+  position: absolute;
+  top: 2000px;
+  width: 1px;
+  height: 1px;
+  background: transparent;
+  box-shadow: 
+    1541px 1715px #FFF, 1223px 300px #FFF, 1422px 1716px #FFF, 1550px 1312px #FFF, 
+    1830px 1805px #FFF, 1883px 1297px #FFF, 1599px 1840px #FFF, 1398px 1564px #FFF, 
+    1727px 1770px #FFF, 1870px 1043px #FFF, 1935px 1816px #FFF, 1310px 1820px #FFF, 
+    1283px 1617px #FFF, 1654px 1395px #FFF, 1905px 1678px #FFF, 1873px 1238px #FFF, 
+    1043px 1364px #FFF, 1949px 1628px #FFF, 1893px 1642px #FFF, 1431px 1557px #FFF,
+    945px 1403px #FFF, 1765px 1256px #FFF, 1324px 1893px #FFF, 1687px 1534px #FFF,
+    1432px 1789px #FFF, 1891px 1345px #FFF, 1234px 1567px #FFF, 1678px 1234px #FFF,
+    1456px 1890px #FFF, 1789px 1456px #FFF, 1234px 1678px #FFF, 1567px 1234px #FFF,
+    1890px 1456px #FFF, 1345px 1789px #FFF, 1678px 1567px #FFF, 1234px 1890px #FFF,
+    1456px 1345px #FFF, 1789px 1678px #FFF, 1567px 1890px #FFF, 1234px 1456px #FFF;
+}
+
+/* Medium Stars Layer */
+.stars2 {
+  width: 2px;
+  height: 2px;
+  background: transparent;
+  box-shadow: 
+    679px 1629px #FFF, 1490px 1187px #FFF, 1092px 1293px #FFF, 1866px 1407px #FFF, 
+    1747px 1114px #FFF, 1699px 1846px #FFF, 1063px 1715px #FFF, 1633px 1780px #FFF, 
+    1873px 1139px #FFF, 1446px 1504px #FFF, 1234px 1678px #FFF, 1567px 1890px #FFF,
+    1789px 1345px #FFF, 1456px 1234px #FFF, 1890px 1567px #FFF, 1345px 1789px #FFF,
+    1678px 1456px #FFF, 1234px 1890px #FFF, 1567px 1345px #FFF, 1789px 1678px #FFF;
+  animation: animStar 100s linear infinite;
+}
+
+.stars2:after {
+  content: " ";
+  position: absolute;
+  top: 2000px;
+  width: 2px;
+  height: 2px;
+  background: transparent;
+  box-shadow: 
+    679px 1629px #FFF, 1490px 1187px #FFF, 1092px 1293px #FFF, 1866px 1407px #FFF, 
+    1747px 1114px #FFF, 1699px 1846px #FFF, 1063px 1715px #FFF, 1633px 1780px #FFF, 
+    1873px 1139px #FFF, 1446px 1504px #FFF, 1234px 1678px #FFF, 1567px 1890px #FFF,
+    1789px 1345px #FFF, 1456px 1234px #FFF, 1890px 1567px #FFF, 1345px 1789px #FFF,
+    1678px 1456px #FFF, 1234px 1890px #FFF, 1567px 1345px #FFF, 1789px 1678px #FFF;
+}
+
+/* Large Stars Layer */
+.stars3 {
+  width: 3px;
+  height: 3px;
+  background: transparent;
+  box-shadow: 
+    1766px 1114px #FFF, 1203px 1517px #FFF, 1570px 1739px #FFF, 1888px 1621px #FFF, 
+    1344px 1293px #FFF, 1234px 1456px #FFF, 1567px 1789px #FFF, 1890px 1234px #FFF,
+    1345px 1567px #FFF, 1678px 1890px #FFF, 1456px 1345px #FFF, 1789px 1678px #FFF;
+  animation: animStar 150s linear infinite;
+}
+
+.stars3:after {
+  content: " ";
+  position: absolute;
+  top: 2000px;
+  width: 3px;
+  height: 3px;
+  background: transparent;
+  box-shadow: 
+    1766px 1114px #FFF, 1203px 1517px #FFF, 1570px 1739px #FFF, 1888px 1621px #FFF, 
+    1344px 1293px #FFF, 1234px 1456px #FFF, 1567px 1789px #FFF, 1890px 1234px #FFF,
+    1345px 1567px #FFF, 1678px 1890px #FFF, 1456px 1345px #FFF, 1789px 1678px #FFF;
+}
+
+/* Performance Optimizations */
+.stars,
+.stars2,
+.stars3 {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .stars,
+  .stars2,
+  .stars3,
+  .animate-infinite-scroll {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

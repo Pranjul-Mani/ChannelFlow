@@ -1,5 +1,4 @@
 // File: src/app/lib/models/User.js
-
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
@@ -25,11 +24,10 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 6
   },
-  role: {
-    type: String,
-    enum: ['admin', 'staff'],
-    default: 'staff'
-  },
+  lastLogin: {
+    type: Date,
+    default: null
+  }
 }, {
   timestamps: true
 });
