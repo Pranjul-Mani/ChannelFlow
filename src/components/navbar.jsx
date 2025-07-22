@@ -68,7 +68,9 @@ export default function Navbar() {
                     <div className="w-8 h-8 bg-cyan-400 rounded-lg flex items-center justify-center">
                         <Globe className="w-5 h-5 text-slate-900" />
                     </div>
+                    <Link href="/">
                     <span className="text-2xl font-bold text-white">ChannelFlow</span>
+                    </Link>
                 </div>
 
                 {/* Navigation and Auth Section */}
