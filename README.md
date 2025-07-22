@@ -12,7 +12,6 @@ A full-stack **Hotel Channel Manager** web application that helps admin efficien
 ## Features
 
 -  **JWT Authentication**: Secure login/signup for admins and staff
--  **Role-Based Access**: Admin vs Staff permissions
 -  **Real-Time Booking Calendar**: Visualize bookings from check-in to check-out
 -  **Booking Management**: Add, view, edit, and categorize room bookings
 -  **Staff Management**: Add and manage staff users
