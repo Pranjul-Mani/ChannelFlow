@@ -128,13 +128,13 @@ export async function POST(request) {
     }
 
     // Check if room name already exists
-    const existingRoom = await Room.findOne({ name: name.toLowerCase() });
-    if (existingRoom) {
-      return NextResponse.json(
-        { success: false, error: "Room with this name already exists" },
-        { status: 400 }
-      );
-    }
+    // const existingRoom = await Room.findOne({ name: name.toLowerCase() });
+    // if (existingRoom) {
+    //   return NextResponse.json(
+    //     { success: false, error: "Room with this name already exists" },
+    //     { status: 400 }
+    //   );
+    // }
 
     // Process amenities
     const processedAmenities = processAmenities(amenities);
@@ -207,12 +207,12 @@ export async function PUT(request) {
       _id: { $ne: id }
     });
     
-    if (existingRoom) {
-      return NextResponse.json(
-        { success: false, error: "Room with this name already exists" },
-        { status: 400 }
-      );
-    }
+    // if (existingRoom) {
+    //   return NextResponse.json(
+    //     { success: false, error: "Room with this name already exists" },
+    //     { status: 400 }
+    //   );
+    // }
 
     // Process amenities
     const processedAmenities = processAmenities(amenities);

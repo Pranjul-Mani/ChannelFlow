@@ -59,16 +59,6 @@ export default function RoomMain() {
   const [floorError, setFloorError] = useState("");
   const [floorSuccess, setFloorSuccess] = useState("");
 
-  // const [selectedCategory, setSelectedCategory] = useState(null)
-
-  // Mock data
-  // const channel = [
-  //   { id: "booking-engine", name: "Booking Engine", icon: "🏨" },
-  //   { id: "booking-com", name: "Booking.com", icon: "🌐" },
-  //   { id: "mmt", name: "MMT", icon: "✈️" },
-  //   { id: "agoda", name: "Agoda", icon: "✈️" },
-  //   { id: "cleartrip", name: "ClearTrip", icon: "✈️" },
-  // ]
 
   useEffect(() => {
     fetchRooms();
@@ -548,31 +538,6 @@ export default function RoomMain() {
           )}
         </header>
 
-        {/* <Card className="mb-6">
-          <CardHeader>
-            <CardTitle>Channel Categories</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex gap-4 overflow-x-auto pb-2">
-              {channel.map((category) => (
-                <div
-                  key={category.id}
-                  onClick={() => setSelectedCategory(category.id)}
-                  className={`flex-shrink-0 px-3 py-2 border-2 rounded-lg cursor-pointer transition-all ${selectedCategory === category.id
-                    ? "border-blue-500 bg-blue-50"
-                    : "border-gray-200 hover:border-blue-300 hover:bg-gray-50"
-                    }`}
-                >
-                  <div className="flex items-center gap-2">
-                    <div className="text-lg">{category.icon}</div>
-                    <h3 className="text-sm font-medium whitespace-nowrap">{category.name}</h3>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card> */}
-
         {/* Floor Error/Success Messages */}
         {floorError && (
           <div className="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded-md shadow-sm animate-fade-in">
@@ -869,7 +834,7 @@ export default function RoomMain() {
                           <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             S.No
                           </th>
-                          <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <th className="capitalpx-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Name
                           </th>
                           <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -887,7 +852,7 @@ export default function RoomMain() {
                               {idx + 1}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="font-medium text-gray-900">{category.name}</div>
+                              <div className="font-medium text-gray-900 capitalize">{category.name}</div>
                             </td>
                             <td className="px-6 py-4">
                               <div className="text-sm text-gray-500 line-clamp-2">
@@ -1000,7 +965,7 @@ export default function RoomMain() {
                   {/* Room ID */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Room ID *
+                      Room No.*
                     </label>
                     <input
                       type="text"
@@ -1047,7 +1012,7 @@ export default function RoomMain() {
                     />
                   </div>
                   {/* GST  */}
-                   <div>
+                  <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       GST in Percentage*
                     </label>
@@ -1287,18 +1252,10 @@ export default function RoomMain() {
 
 
 
-
-
-
-
         {/* Room Management Table */}
 
         <Card>
-          {/* <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle>{channel.find((c) => c.id === selectedCategory)?.name} - Room Management</CardTitle>
-            </div>
-          </CardHeader> */}
+
           <CardContent>
             {loading ? (
               <div className="p-8 text-center">
@@ -1314,10 +1271,10 @@ export default function RoomMain() {
                         Sr.N
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Room Id
+                        Images
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Room Name
+                        Room No
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Category
@@ -1325,9 +1282,9 @@ export default function RoomMain() {
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Price/Night
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         No of Rooms
-                      </th>
+                      </th> */}
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Beds
                       </th>
@@ -1354,36 +1311,64 @@ export default function RoomMain() {
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                           {idx + 1}
                         </td>
+
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {room.images && room.images.length > 0 ? (
+                            <div className="flex gap-1 max-w-xs">
+                              {room.images.slice(0, 3).map((img, index) => (
+                                <div
+                                  key={index}
+                                  className="h-12 w-12 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0"
+                                >
+                                  <img
+                                    src={img}
+                                    alt={`${room.name} - ${index + 1}`}
+                                    className="h-full w-full object-cover"
+                                    onError={(e) => {
+                                      e.target.onerror = null;
+                                      e.target.src =
+                                        "https://via.placeholder.com/48?text=No+Image";
+                                    }}
+                                  />
+                                </div>
+                              ))}
+                              {room.images.length > 3 && (
+                                <div className="h-12 w-12 rounded-lg bg-gray-200 flex items-center justify-center">
+                                  <span className="text-xs text-gray-600">
+                                    +{room.images.length - 3}
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+                          ) : (
+                            <div className="h-12 w-12 rounded-lg bg-gray-200 flex items-center justify-center">
+                              <Image size={20} className="text-gray-400" />
+                            </div>
+                          )}
+                        </td>
+
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                           <div className="flex items-center">
                             <Users size={16} className="mr-1 text-gray-400" />
                             {room.roomId || "-"}
                           </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        {/* <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm font-medium text-gray-900 capitalize">
                             {room.name || room.roomName}
                           </div>
-                          {/* {room.description && (
-                                <div className="text-sm text-gray-500 truncate max-w-xs">
-                                  {room.description}
-                                </div>
-                              )} */}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {room.category?.name || room.category || "-"}
-                          {/* {
-                                <div className="text-sm text-gray-500 truncate max-w-xs">
-                                  Floor: {room.floor?.name}
-                                </div>
-                              } */}
-                        </td>
+
+                        </td> */}
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 capitalize">
+                        {room.category?.name || "-"}
+                      </td>
+
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                           {((room.price || room.pricePerNight) || 0).toLocaleString("en-IN", {
                             style: "currency",
                             currency: "INR",
                           })}
-                          <div className="text-sm text-gray-500 truncate max-w-xs">
+                          {/* <div className="text-sm text-gray-500 truncate max-w-xs">
                             Inc. GST :
 
                             <span className="font-medium text-gray-900">
@@ -1396,14 +1381,14 @@ export default function RoomMain() {
                               })}
                             </span>
 
-                          </div>
+                          </div> */}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                           <div className="flex items-center">
                             <Clock size={16} className="mr-1 text-gray-400" />
                             {room.noOfRoom || room.noOfRooms || 1}
                           </div>
-                        </td>
+                        </td> */}
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                           <div className="flex items-center">
                             <Bed size={16} className="mr-1 text-gray-400" />

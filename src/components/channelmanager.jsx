@@ -20,28 +20,29 @@ const HotelChannelManager = () => {
   // Mock data for channels
   const [channels] = useState([])
 
-  // Navigation items (for internal navigation only)
+  // Navigation items
   const navItems = [
     { id: "dashboard", label: "Dashboard", icon: TrendingUp },
-    { id: "reservation", label: "Reservation", icon: BedDouble },
-    { id: "inventory", label: "Inventory & Rates", icon: Calendar },
     { id: "calendar", label: "Calendar", icon: Calendar },
     { id: "bookings", label: "Bookings", icon: Users },
+    { id: "inventory", label: "Inventory", icon: Calendar },
+    { id: "reservation", label: "Reservation", icon: BedDouble },
   ]
 
-  // Handle main navigation clicks
+  // Handle navigation clicks
   const handleNavClick = (item) => {
-    if (item.external) {
-      window.open(item.route, '_blank')
-    } else {
-      setActiveTab(item.id)
-    }
+    setActiveTab(item.id)
+  }
+
+  // Get the index of the active tab for glider positioning
+  const getActiveTabIndex = () => {
+    return navItems.findIndex((item) => item.id === activeTab)
   }
 
   // Check authentication status on component mount
   useEffect(() => {
     if (!isLoading && !user) {
-      router.push('/login')
+      router.push("/login")
     }
   }, [user, isLoading, router])
 
@@ -50,10 +51,10 @@ const HotelChannelManager = () => {
     switch (activeTab) {
       case "dashboard":
         return <Dashboard channels={channels} />
-      case "reservation":
-        return <Reservation channels={channels} />
       case "calendar":
         return <CalendarView />
+      case "reservation":
+        return <Reservation channels={channels} />
       case "inventory":
         return <Inventory />
       case "bookings":
@@ -80,59 +81,73 @@ const HotelChannelManager = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50"> {/* Added pt-16 for navbar space */}
+    <div className="min-h-screen bg-gray-50">
       {/* Internal Navigation Header */}
       <header className="bg-white shadow-sm border-b border-gray-200">
         <div className="px-6 py-4">
           <div className="flex items-center justify-between">
             {/* Title */}
             <Link href="/">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900 ml-10">ChannelFlow</h1>
-              
-            </div>
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900 ml-10">ChannelFlow</h1>
+              </div>
             </Link>
 
-            {/* Internal Navigation */}
-            <nav className="hidden md:flex items-center space-x-1">
-              {navItems.map((item) => {
-                const IconComponent = item.icon
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => handleNavClick(item)}
-                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer ${
-                      activeTab === item.id
-                        ? "bg-blue-100 text-blue-700"
-                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                    }`}
-                  >
-                    <IconComponent className="h-4 w-4" />
-                    <span>{item.label}</span>
-                  </button>
-                )
-              })}
+            {/* Glass Navigation - Desktop */}
+            <nav className="hidden md:block mr-16">
+              <div className="relative flex bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 shadow-[inset_1px_1px_4px_rgba(255,255,255,0.2),inset_-1px_-1px_6px_rgba(0,0,0,0.1),0_4px_12px_rgba(0,0,0,0.15)] overflow-hidden">
+                {/* Glider */}
+                <div
+                  className="absolute top-0 bottom-0 rounded-2xl z-10 transition-all duration-500 ease-[cubic-bezier(0.37,1.95,0.66,0.56)] bg-gradient-to-br from-blue-400 to-blue-700 shadow-[0_0_18px_rgba(59,130,246,0.5),0_0_10px_rgba(147,197,253,0.4)_inset]"
+                  style={{
+                    width: `${100 / navItems.length}%`,
+                    transform: `translateX(${getActiveTabIndex() * 100}%)`,
+                  }}
+                />
+
+                {/* Navigation Items */}
+                {navItems.map((item) => {
+                  const IconComponent = item.icon
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => handleNavClick(item)}
+                      className={`relative z-20 flex items-center space-x-2 px-6 py-3 text-sm font-semibold tracking-wide transition-colors duration-300 cursor-pointer min-w-[120px] justify-center ${activeTab === item.id ? "text-white" : "text-gray-600 hover:text-black"
+                        }`}
+                    >
+                      <IconComponent className="h-4 w-4" />
+                      <span>{item.label}</span>
+                    </button>
+                  )
+                })}
+              </div>
             </nav>
           </div>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* Mobile Navigation - Glass Style */}
         <div className="md:hidden px-6 py-3 border-t border-gray-200">
-          <div className="flex space-x-1 overflow-x-auto">
+          <div className="relative flex bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 shadow-[inset_1px_1px_4px_rgba(255,255,255,0.2),inset_-1px_-1px_6px_rgba(0,0,0,0.1),0_4px_12px_rgba(0,0,0,0.15)] overflow-hidden overflow-x-auto">
+            {/* Mobile Glider */}
+            <div
+              className="absolute top-0 bottom-0 rounded-2xl z-10 transition-all duration-500 ease-[cubic-bezier(0.37,1.95,0.66,0.56)] bg-gradient-to-br from-blue-400/30 to-blue-600/40 shadow-[0_0_18px_rgba(59,130,246,0.5),0_0_10px_rgba(147,197,253,0.4)_inset]"
+              style={{
+                width: `${100 / navItems.length}%`,
+                transform: `translateX(${getActiveTabIndex() * 100}%)`,
+              }}
+            />
+
             {navItems.map((item) => {
               const IconComponent = item.icon
               return (
                 <button
                   key={item.id}
                   onClick={() => setActiveTab(item.id)}
-                  className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
-                    activeTab === item.id
-                      ? "bg-blue-100 text-blue-700"
-                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                  }`}
+                  className={`relative z-20 flex items-center space-x-2 px-4 py-3 text-sm font-semibold whitespace-nowrap transition-colors duration-300 min-w-[100px] justify-center ${activeTab === item.id ? "text-white" : "text-gray-600 hover:text-white"
+                    }`}
                 >
                   <IconComponent className="h-4 w-4" />
-                  <span>{item.label}</span>
+                  <span className="hidden sm:inline">{item.label}</span>
                 </button>
               )
             })}
@@ -141,9 +156,7 @@ const HotelChannelManager = () => {
       </header>
 
       {/* Main Content */}
-      <main className="p-6">
-        {renderContent()}
-      </main>
+      <main >{renderContent()}</main>
     </div>
   )
 }

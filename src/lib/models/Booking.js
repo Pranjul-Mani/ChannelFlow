@@ -1,75 +1,84 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const BookingSchema = new mongoose.Schema({
-  personDetails: [
-    {
-      name: {
-        type: String,
-        required: true,
-      },
-      contactNumber: {
-        type: Number,
-        required: true,
-      },
+const bookingSchema = new mongoose.Schema(
+  {
+    /** Who is creating / owning this booking */
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
-  ],
 
-  checkInDate: {
-    type: Date,
-    required: true
-  },
-  checkOutDate: {
-    type: Date,
-    required: true
-  },
-  numberOfGuests: {
-    type: Number,
-    default: 1,
-    min: 1
-  },
-  numberOfRooms: {
-    type: Number,
-    default: 1,
-    min: 1,
-    required: true
-  },
-  roomType: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Room",
-    required: true,
-  },
-  source: {
-    type: String,
-    default: "booking engine"
-  },
-  status: {
-    type: String,
-    enum: ['confirmed', 'checked-in', 'checked-out', 'cancelled'],
-    default: 'confirmed'
-  },
-  totalAmount: {
-    type: Number,
-    required: true,
-    min: 0
-  },
+    /** Guest‑by‑guest information */
+    personDetails: [
+      {
+        name: { type: String, required: true },
+        age: { type: Number, required: true },
+        phone: { type: String },   // optional
+        email: { type: String },   // optional
 
-}, {
-  timestamps: true
-});
+        /** (Optional) link the guest to the room they’ll occupy */
+        assignedRoom: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Room",
+        },
+      },
+    ],
 
-// ✅ Fixed indexes to use correct field names
-BookingSchema.index({ checkInDate: 1, checkOutDate: 1 });
-BookingSchema.index({ source: 1 });
-BookingSchema.index({ roomType: 1 });
-BookingSchema.index({ status: 1 });
+    /** One entry per room being booked */
+    rooms: [
+      {
+        /** Specific room chosen */
+        roomId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Room",
+          required: true,
+        },
 
-// ✅ Fixed validation middleware for date fields
-BookingSchema.pre('save', function (next) {
-  if (this.checkOutDate <= this.checkInDate) {
-    next(new Error('Check-out date must be after check-in date'));
-  } else {
-    next();
-  }
-});
+        /** Rate plan selected for that room (e.g. ‘EP’, ‘CP’, ‘MAP’) */
+        rateType: {
+          type: String,
+          // required: true,
+        },
 
-export default mongoose.models.Booking || mongoose.model('Booking', BookingSchema);
+        /** Occupancy */
+        adults: { type: Number, default: 2 },
+        children: { type: Number, default: 0 },
+
+        /** If the user overrides the calculated total */
+        customPrice: { type: Number, default: null },
+      },
+    ],
+
+    /** Stay dates */
+    checkInDate: { type: Date, required: true },
+    checkOutDate: { type: Date, required: true },
+
+    /** Grand total for the whole booking (after any overrides) */
+    totalAmount: { type: Number, required: true },
+
+    /** Booking channel */
+    source: {
+      type: String,
+      enum: ["walk-in", "booking engine", "ota", "website"],
+      default: "booking engine",
+    },
+
+    /** Lifecycle state of the booking */
+    status: {
+      type: String,
+      enum: [
+        "pending",
+        "confirmed",
+        "cancelled",
+        "completed",
+        "checked-in",
+        "checked-out",
+      ],
+      default: "pending",
+    },
+  },
+  { timestamps: true }
+);
+
+module.exports =
+  mongoose.models.Booking || mongoose.model("Booking", bookingSchema);

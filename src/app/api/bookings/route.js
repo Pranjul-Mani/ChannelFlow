@@ -3,24 +3,259 @@ import { NextResponse } from 'next/server'
 import dbConnect from '@/lib/utils/database'
 import Booking from '@/lib/models/Booking'
 import Room from '@/lib/models/room'
+import Category from '@/lib/models/Category'
 
 export async function POST(req) {
-    try {
-        await dbConnect()
-        const data = await req.json()
+  try {
+    await dbConnect();
+    const data = await req.json();
 
-        const newBooking = await Booking.create(data)
-
-        return NextResponse.json({ message: 'Booking created successfully', booking: newBooking }, { status: 201 })
-    } catch (error) {
-        return NextResponse.json({ message: error.message || 'Internal Server Error' }, { status: 500 })
+    // Validate required fields
+    if (
+      !data.rooms ||
+      !Array.isArray(data.rooms) ||
+      data.rooms.length === 0 ||
+      !data.checkInDate ||
+      !data.checkOutDate ||
+      !data.personDetails ||
+      !Array.isArray(data.personDetails) ||
+      data.personDetails.length === 0
+    ) {
+      return NextResponse.json(
+        { success: false, message: "Missing required fields" },
+        { status: 400 }
+      );
     }
+
+    // Validate rooms array structure (now each room is individual)
+    const validRooms = data.rooms.filter(roomData =>
+      roomData &&
+      typeof roomData === 'object' &&
+      roomData.roomId
+    );
+
+    if (validRooms.length === 0) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "At least one valid room with roomId is required"
+        },
+        { status: 400 }
+      );
+    }
+
+    // Validate person details structure
+    const validPersonDetails = data.personDetails.filter(person =>
+      person &&
+      typeof person === 'object' &&
+      person.name &&
+      person.name.trim() &&
+      person.age &&
+      typeof person.age === 'number' &&
+      person.age > 0 &&
+      person.age <= 120
+    );
+
+    if (validPersonDetails.length === 0) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "At least one valid person detail (name and age) is required"
+        },
+        { status: 400 }
+      );
+    }
+
+    // Validate dates
+    const checkIn = new Date(data.checkInDate);
+    const checkOut = new Date(data.checkOutDate);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (checkIn < today) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Check-in date cannot be in the past",
+        },
+        { status: 400 }
+      );
+    }
+
+    if (checkOut <= checkIn) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Check-out date must be after check-in date",
+        },
+        { status: 400 }
+      );
+    }
+
+    let totalCalculatedAmount = 0;
+    let maxTotalPersons = 0;
+    const roomsToBook = [];
+
+    // Validate each room and calculate totals
+    for (const roomData of validRooms) {
+      const room = await Room.findById(roomData.roomId);
+      if (!room) {
+        return NextResponse.json(
+          { success: false, message: `Room with ID ${roomData.roomId} not found` },
+          { status: 404 }
+        );
+      }
+
+      if (!room.isAvailable) {
+        return NextResponse.json(
+          { success: false, message: `Room ${room.name} is not available` },
+          { status: 400 }
+        );
+      }
+
+      // Check for overlapping bookings
+      const overlappingBookings = await Booking.find({
+        "rooms.roomId": room._id,
+        status: { $in: ["confirmed", "pending", "checked-in"] },
+        $or: [
+          {
+            checkInDate: { $lt: checkOut },
+            checkOutDate: { $gt: checkIn },
+          },
+        ],
+      });
+
+      if (overlappingBookings.length > 0) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: `Room ${room.name} (${room.roomId}) is already booked for the selected dates`,
+          },
+          { status: 400 }
+        );
+      }
+
+      // Calculate amount for this room - FIX: Use customPrice if available
+      const days = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
+      
+      // ✅ THIS IS THE FIX: Use customPrice if provided, otherwise use room.price
+      const roomPrice = roomData.customPrice !== null && roomData.customPrice !== undefined 
+        ? roomData.customPrice 
+        : room.price;
+      
+      const roomTotal = roomPrice * days;
+      totalCalculatedAmount += roomTotal;
+
+      // Calculate person capacity
+      const maxPersonsPerRoom = room.bed * 2;
+      maxTotalPersons += maxPersonsPerRoom;
+
+      roomsToBook.push({
+        roomId: room._id,
+        numberOfRooms: 1,
+        roomDetails: room,
+        finalPrice: roomPrice // Store the final price used
+      });
+    }
+
+    // Validate person capacity against total rooms
+    if (validPersonDetails.length > maxTotalPersons) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: `Maximum ${maxTotalPersons} persons allowed for ${validRooms.length} room(s)`,
+        },
+        { status: 400 }
+      );
+    }
+
+    // Verify the total amount matches (if provided)
+    if (data.totalAmount && Math.abs(data.totalAmount - totalCalculatedAmount) > 0.01) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Total amount calculation mismatch",
+          calculatedTotal: totalCalculatedAmount,
+          providedTotal: data.totalAmount,
+        },
+        { status: 400 }
+      );
+    }
+
+    // Generate booking reference
+    const bookingReference = `BK${Date.now()}${Math.random()
+      .toString(36)
+      .substr(2, 4)
+      .toUpperCase()}`;
+
+    // Create new booking
+    const booking = new Booking({
+      // With this (fully detailed room info):
+      rooms: data.rooms.map(room => ({
+        roomId: room.roomId,
+        rateType: room.rateType,
+        adults: room.adults,
+        children: room.children,
+        customPrice: room.customPrice || null
+      })),
+      checkInDate: data.checkInDate,
+      checkOutDate: data.checkOutDate,
+      personDetails: validPersonDetails.map(person => ({
+        name: person.name.trim(),
+        age: person.age,
+        phone: person.phone || '',
+        email: person.email || ''
+      })),
+      totalAmount: data.totalAmount || totalCalculatedAmount,
+      source: data.source || "booking engine",
+      status: "pending",
+    });
+
+    // Save the booking
+    await booking.save();
+
+    // Mark rooms as unavailable
+    for (const room of roomsToBook) {
+      await Room.findByIdAndUpdate(room.roomId, { isAvailable: false });
+    }
+
+    return NextResponse.json(
+      {
+        success: true,
+        message: "Booking created successfully",
+        booking: {
+          _id: booking._id,
+          bookingReference: bookingReference,
+          status: booking.status,
+          totalAmount: booking.totalAmount,
+          calculatedAmount: totalCalculatedAmount,
+          // With this (fully detailed room info):
+          rooms: data.rooms.map(room => ({
+            roomId: room.roomId,
+            rateType: room.rateType,
+            adults: room.adults,
+            children: room.children,
+            customPrice: room.customPrice || null
+          })),
+          createdAt: booking.createdAt,
+        },
+      },
+      { status: 201 }
+    );
+  } catch (error) {
+    console.error("Booking creation error:", error);
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Failed to create booking",
+        error: error.message,
+      },
+      { status: 500 }
+    );
+  }
 }
 
-
-
-
-// GET handler to retrieve all bookings with comprehensive filtering and detailed information
+// GET handler to retrieve all bookings
 export async function GET(req) {
   try {
     await dbConnect();
@@ -28,23 +263,33 @@ export async function GET(req) {
     // Get filter parameters from URL
     const url = new URL(req.url);
     const status = url.searchParams.get("status");
-    const paymentStatus = url.searchParams.get("paymentStatus");
-    const roomId = url.searchParams.get("roomId");
+    const source = url.searchParams.get("source");
     const limit = parseInt(url.searchParams.get("limit") || "50");
     const page = parseInt(url.searchParams.get("page") || "1");
     const skip = (page - 1) * limit;
 
-    // Build query (removed roomId filter until we know the correct field name)
+    // Build query
     const query = {};
-    if (status) query.status = status;
-    if (paymentStatus) query.paymentStatus = paymentStatus;
-    // if (roomId) query.room = roomId; // Commented out until we know the correct field
+    if (status && status !== "all") query.status = status;
+    if (source && source !== "all") query.source = source;
 
     // Get total count for pagination
     const totalBookings = await Booking.countDocuments(query);
 
-    // Fetch bookings without population first to avoid schema errors
+    // Fetch bookings with detailed population
     const bookings = await Booking.find(query)
+      .populate({
+        path: "rooms.roomId",
+        select: "name roomId location price images amenities bed description category floor",
+        populate: {
+          path: "category",
+          select: "name"
+        }
+      })
+      .populate({
+        path: "user",
+        select: "name email phone createdAt",
+      })
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);
@@ -52,131 +297,121 @@ export async function GET(req) {
     // Transform bookings to provide more detailed structure
     const detailedBookings = bookings.map(booking => {
       const bookingObj = booking.toObject();
-      
-      // Extract guest information from available fields
+
+      // Extract guest information from personDetails
       const guestInformation = {
-        totalGuests: bookingObj.personDetails?.length || (bookingObj.personName ? (Array.isArray(bookingObj.personName) ? bookingObj.personName.length : 1) : 0),
+        totalGuests: bookingObj.personDetails?.length || 0,
         guests: bookingObj.personDetails?.map((person, index) => ({
           guestNumber: index + 1,
-          name: person.name || person,
-          age: person.age || null
-        })) || (bookingObj.personName ? 
-          (Array.isArray(bookingObj.personName) ? 
-            bookingObj.personName.map((name, index) => ({
-              guestNumber: index + 1,
-              name: name,
-              age: null
-            })) : 
-            [{ guestNumber: 1, name: bookingObj.personName, age: null }]
-          ) : []),
-        primaryGuest: bookingObj.personDetails?.[0] || (bookingObj.personName ? 
-          { name: Array.isArray(bookingObj.personName) ? bookingObj.personName[0] : bookingObj.personName } : null)
+          name: person.name || 'Unknown',
+          age: person.age || 'N/A',
+          phone: person.phone || '',
+          email: person.email || ''
+        })) || [],
+        primaryGuest: bookingObj.personDetails?.[0] || null
       };
 
-      // Extract user information (without population)
-      const userInformation = {
-        userId: bookingObj.user || null,
-        name: bookingObj.userName || null,
-        email: bookingObj.userEmail || null,
-        phone: bookingObj.userPhone || null,
-        address: bookingObj.userAddress || null,
-        accountCreated: null
-      };
+      // Extract room details with better error handling
+      const roomDetails = bookingObj.rooms?.map(roomBooking => {
+        const roomInfo = roomBooking.roomId;
+        return {
+          roomInfo: {
+            roomId: roomInfo?._id?.toString() || '',
+            roomNumber: roomInfo?.roomId || 'N/A',
+            name: roomInfo?.name || 'Unknown Room',
+            location: roomInfo?.location || 'N/A',
+            category: roomInfo?.category?.name || 'N/A',
+            pricePerNight: roomInfo?.price || 0,
+            beds: roomInfo?.bed || 'N/A',
+            description: roomInfo?.description || '',
+            amenities: roomInfo?.amenities || [],
+            images: roomInfo?.images || [],
+            floor: roomInfo?.floor || 'N/A'
+          },
+          bookingInfo: {
+            numberOfRooms: roomBooking.numberOfRooms || 1
+          }
+        };
+      }) || [];
 
-      // Extract room details (without population - using available room data)
-      const roomDetails = [{
-        roomInfo: {
-          roomId: bookingObj.roomId || bookingObj.room || null,
-          roomNumber: bookingObj.roomNumber || null,
-          name: bookingObj.roomName || "Room",
-          location: bookingObj.roomLocation || null,
-          pricePerRoom: bookingObj.roomPrice || 0,
-          capacity: bookingObj.roomCapacity || null,
-          description: bookingObj.roomDescription || null,
-          amenities: bookingObj.roomAmenities || [],
-          images: bookingObj.roomImages || []
-        },
-        bookingInfo: {
-          numberOfRooms: bookingObj.numberOfRooms || 1,
-          totalRoomCost: bookingObj.totalAmount || 0
-        }
-      }];
+      // Calculate booking summary with proper date handling
+      const checkInDate = bookingObj.checkInDate ? new Date(bookingObj.checkInDate) : null;
+      const checkOutDate = bookingObj.checkOutDate ? new Date(bookingObj.checkOutDate) : null;
 
-      // Calculate booking summary
-      const totalRooms = bookingObj.numberOfRooms || 1;
-      const checkInDate = new Date(bookingObj.checkInDate);
-      const checkOutDate = new Date(bookingObj.checkOutDate);
-      const numberOfNights = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
+      // Validate dates more thoroughly
+      const isValidCheckIn = checkInDate && checkInDate instanceof Date && !isNaN(checkInDate.getTime());
+      const isValidCheckOut = checkOutDate && checkOutDate instanceof Date && !isNaN(checkOutDate.getTime());
 
-      // Booking timeline
-      const bookingTimeline = {
-        created: bookingObj.createdAt,
-        lastUpdated: bookingObj.updatedAt,
-        checkIn: bookingObj.checkInDate,
-        checkOut: bookingObj.checkOutDate,
-        status: bookingObj.status
-      };
+      let numberOfNights = 0;
+      if (isValidCheckIn && isValidCheckOut && checkOutDate > checkInDate) {
+        numberOfNights = Math.max(1, Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24)));
+      }
 
       return {
-        // Basic booking info
         _id: bookingObj._id,
         bookingId: bookingObj._id.toString().slice(-8).toUpperCase(),
-        status: bookingObj.status,
-        totalAmount: bookingObj.totalAmount,
-        
-        // Detailed information
-        userInformation,
+        status: bookingObj.status || 'pending',
+        source: bookingObj.source || 'booking engine',
+        totalAmount: bookingObj.totalAmount || 0,
+
+        // User information from populated user
+        userInformation: {
+          name: bookingObj.user?.name || 'Unknown User',
+          email: bookingObj.user?.email || 'No email provided',
+          phone: bookingObj.user?.phone || 'No phone provided',
+        },
+
         guestInformation,
         roomDetails,
-        
-        // Booking summary
+
         bookingSummary: {
-          totalRooms,
+          totalRooms: roomDetails.reduce((sum, room) => sum + room.bookingInfo.numberOfRooms, 0),
           numberOfNights,
-          checkInDate: bookingObj.checkInDate,
-          checkOutDate: bookingObj.checkOutDate,
-          duration: numberOfNights === 1 ? "1 night" : `${numberOfNights} nights`
+          checkInDate: isValidCheckIn ? checkInDate.toISOString() : null,
+          checkOutDate: isValidCheckOut ? checkOutDate.toISOString() : null,
+          checkInDateRaw: bookingObj.checkInDate,
+          checkOutDateRaw: bookingObj.checkOutDate,
+          duration: numberOfNights > 0 ? (numberOfNights === 1 ? "1 night" : `${numberOfNights} nights`) : "Invalid dates",
+          isValidDates: isValidCheckIn && isValidCheckOut && checkOutDate > checkInDate
         },
-        
-        // Timeline
-        bookingTimeline,
-        
-        // Legacy fields for backward compatibility
-        user: userInformation,
-        room: roomDetails[0]?.roomInfo || null,
-        personName: guestInformation.guests.map(guest => guest.name),
-        checkInDate: bookingObj.checkInDate,
-        checkOutDate: bookingObj.checkOutDate,
+
         createdAt: bookingObj.createdAt,
-        updatedAt: bookingObj.updatedAt,
-        
-        // Include all original fields for debugging
-        originalData: bookingObj
+        updatedAt: bookingObj.updatedAt
       };
     });
 
-    return NextResponse.json({
-      success: true,
-      bookings: detailedBookings,
-      pagination: {
-        total: totalBookings,
-        pages: Math.ceil(totalBookings / limit),
-        page,
-        limit,
-      },
-      summary: {
-        totalBookings,
-        statusBreakdown: await getStatusBreakdown(),
-      }
-    }, { status: 200 });
+    // Get breakdown data
+    const statusBreakdown = await getStatusBreakdown();
+    const sourceBreakdown = await getSourceBreakdown();
 
+    return NextResponse.json(
+      {
+        success: true,
+        bookings: detailedBookings,
+        pagination: {
+          total: totalBookings,
+          pages: Math.ceil(totalBookings / limit),
+          page,
+          limit,
+        },
+        summary: {
+          totalBookings,
+          statusBreakdown,
+          sourceBreakdown,
+        }
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error fetching bookings:", error);
-    return NextResponse.json({
-      success: false,
-      message: "Failed to fetch bookings",
-      error: error.message,
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Failed to fetch bookings",
+        error: error.message,
+      },
+      { status: 500 }
+    );
   }
 }
 
@@ -191,15 +426,39 @@ async function getStatusBreakdown() {
         }
       }
     ]);
-    
+
     const breakdown = {};
     statusCounts.forEach(item => {
-      breakdown[item._id] = item.count;
+      breakdown[item._id || 'undefined'] = item.count;
     });
-    
+
     return breakdown;
   } catch (error) {
     console.error("Error getting status breakdown:", error);
+    return {};
+  }
+}
+
+// Helper function to get source breakdown
+async function getSourceBreakdown() {
+  try {
+    const sourceCounts = await Booking.aggregate([
+      {
+        $group: {
+          _id: "$source",
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+
+    const breakdown = {};
+    sourceCounts.forEach(item => {
+      breakdown[item._id || 'booking engine'] = item.count;
+    });
+
+    return breakdown;
+  } catch (error) {
+    console.error("Error getting source breakdown:", error);
     return {};
   }
 }
@@ -256,8 +515,8 @@ export async function checkRoomAvailability(roomId, checkInDate, checkOutDate, n
       availableRooms,
       totalRooms: room.noOfRoom,
       bookedRooms: currentlyBookedRooms,
-      message: numberOfRooms <= availableRooms ? 
-        `${availableRooms} rooms available` : 
+      message: numberOfRooms <= availableRooms ?
+        `${availableRooms} rooms available` :
         `Only ${availableRooms} rooms available, ${numberOfRooms} requested`
     };
   } catch (error) {
@@ -271,7 +530,7 @@ export async function calculateBookingTotal(rooms, checkInDate, checkOutDate) {
   try {
     let totalAmount = 0;
     const days = Math.ceil((new Date(checkOutDate) - new Date(checkInDate)) / (1000 * 60 * 60 * 24));
-    
+
     for (const roomData of rooms) {
       const room = await Room.findById(roomData.roomId);
       if (room) {
@@ -279,7 +538,7 @@ export async function calculateBookingTotal(rooms, checkInDate, checkOutDate) {
         totalAmount += roomTotal;
       }
     }
-    
+
     return {
       totalAmount,
       numberOfDays: days,

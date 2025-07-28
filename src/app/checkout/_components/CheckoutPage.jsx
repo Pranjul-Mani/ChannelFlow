@@ -213,7 +213,7 @@ const CheckoutPage = () => {
         totalAmount: calculateTotal()
       };
       
-      const response = await fetch('/api/booking', {
+      const response = await fetch('/api/bookings', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -44,21 +44,21 @@ export default function LandingPage() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Button asChild size="lg" className="bg-cyan-400 hover:bg-cyan-500 text-slate-900 text-lg px-8 py-4">
-                    <Link href="/">
-                      Get Started Now
+                    <Link href="/dashboard">
+                      View Dashboard Demo
                       <ArrowRight className="ml-2 w-5 h-5" />
                     </Link>
                   </Button>
                 </motion.div>
-                <Button
+                {/* <Button
                   size="lg"
                   variant="outline"
                   className="border-slate-600 text-white hover:bg-white/10 text-lg px-8 py-4 bg-transparent cursor-pointer"
                 >
                   <Link href="/dashboard">
-                    View Dashboard Demo
+                    
                   </Link>
-                </Button>
+                </Button> */}
               </div>
             </motion.div>
           </div>
