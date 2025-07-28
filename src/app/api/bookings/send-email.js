@@ -1,7 +1,7 @@
 // For Pages Router: /pages/api/booking/send-email.js
 import nodemailer from 'nodemailer';
 
-const transporter = nodemailer.createTransporter({
+const transporter = nodemailer.createTransport({
     service: 'gmail', // or your email service
     auth: {
         user: process.env.EMAIL_USER,
@@ -100,7 +100,7 @@ function generateEmailContent(booking) {
               <p style="margin: 0;">Near Geeta Ashram Taxi Stand, Swargashram, Rishikesh,</p>
               <p style="margin: 0;">Dehradun, Uttarakhand, 249304,</p>
               <p style="margin: 0 0 8px 0;">Rishikesh - 249304,Uttarakhand,India</p>
-              <p style="margin: 0;">bookings@hotelmoksha.in</p>
+              <p style="margin: 0;">bookings@hotel.in</p>
               <p style="margin: 0;">Phone : +91 135 244 0040</p>
             </div>
           </div>
@@ -197,7 +197,7 @@ function generateEmailContent(booking) {
           <div class="contact-info">
             <p style="margin-bottom: 6px;">This email has been sent from an automated system - please do not reply to it.</p>
             <p style="margin-bottom: 6px;"><strong>**** FOR ANY FURTHER QUERY ****</strong></p>
-            <p style="margin-bottom: 4px;"><strong>Contact us by Email Id:</strong> bookings@hotelmoksha.in</p>
+            <p style="margin-bottom: 4px;"><strong>Contact us by Email Id:</strong> bookings@hotel.in</p>
             <p style="margin-bottom: 4px;"><strong>Phone NO:</strong> +91 135 244 0040</p>
             <p style="margin: 0;"><strong>Address:</strong> Near Geeta Ashram Taxi Stand, Swargashram, Rishikesh, Dehradun, Uttarakhand, 249304, Rishikesh-249304, Uttarakhand, India</p>
           </div>

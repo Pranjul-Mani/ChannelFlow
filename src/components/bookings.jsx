@@ -361,7 +361,7 @@ export default function BookingsAdmin() {
               <p>Near Geeta Ashram Taxi Stand, Swargashram, Rishikesh,</p>
               <p>Dehradun, Uttarakhand, 249304,</p>
               <p>Rishikesh - 249304,Uttarakhand,India</p>
-              <p class="mt-2">bookings@hotelmoksha.in</p>
+              <p class="mt-2">bookings@hotel.in</p>
               <p>Phone : +91 135 244 0040</p>
             </div>
           </div>
@@ -466,7 +466,7 @@ export default function BookingsAdmin() {
         <div class="text-center text-xs">
           <p class="mb-1">This email has been sent from an automated system - please do not reply to it.</p>
           <p class="font-bold mb-1">**** FOR ANY FURTHER QUERY ****</p>
-          <p><strong>Contact us by Email Id:</strong> bookings@hotelmoksha.in</p>
+          <p><strong>Contact us by Email Id:</strong> bookings@hotel.in</p>
           <p><strong>Phone NO:</strong> +91 135 244 0040</p>
           <p class="mt-1">Address: Near Geeta Ashram Taxi Stand, Swargashram, Rishikesh, Dehradun, Uttarakhand, 249304, Rishikesh-249304, Uttarakhand, India</p>
         </div>
