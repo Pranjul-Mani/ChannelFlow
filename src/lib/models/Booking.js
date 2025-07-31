@@ -46,6 +46,7 @@ const bookingSchema = new mongoose.Schema(
 
         /** If the user overrides the calculated total */
         customPrice: { type: Number, default: null },
+        numberOfRooms: { type: Number, min: 1 },
       },
     ],
 

@@ -2,10 +2,19 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts"
-import { ArrowDown, ArrowUp, BedDouble, Users, Calendar, RefreshCw } from "lucide-react"
+import { ArrowDown, ArrowUp, BedDouble, Users, Calendar, RefreshCw, Globe, TrendingUp } from "lucide-react"
 import { useState, useEffect } from "react"
 
 export default function Dashboard() {
+  // Mock OTA Data
+  const mockOTAData = [
+    { name: "Booking.com", bookings: 23, color: "#003580", icon: "🏨" },
+    { name: "EaseMyTrip", bookings: 18, color: "#FFC72C", icon: "✈️" },
+    { name: "Agoda", bookings: 15, color: "#FF6600", icon: "🌟" },
+    { name: "MakeMyTrip", bookings: 12, color: "#E73C7E", icon: "🎯" },
+    { name: "Airbnb", bookings: 8, color: "#FF5A5F", icon: "🏠" }
+  ]
+
   const [arrivalData, setArrivalData] = useState({
     pending: 0,
     arrived: 0,
@@ -104,7 +113,7 @@ export default function Dashboard() {
           return checkOutDate.toDateString() === today.toDateString()
         })
 
-        const checkedOutCount = todayDepartures.filter((booking) => booking.status === "checked-out").length
+        const checkedOutCount = todayDepartures.filter((booking) => booking.status === "checked-out" || booking.status === "completed").length
 
         const pendingDepartures = todayDepartures.filter(
           (booking) => booking.status === "checked-in" || booking.status === "confirmed",
@@ -236,9 +245,9 @@ export default function Dashboard() {
         </div>
       </div>
 
-
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+
         <div className="grid gap-10 grid-cols-1 md:grid-cols-6 lg:grid-cols-4">
           {/* Today's Arrival Card */}
           <Card className="group relative overflow-hidden bg-white/70 backdrop-blur-sm border-0 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-2xl">
@@ -406,6 +415,47 @@ export default function Dashboard() {
             </div>
           </Card>
         </div>
+        {/* Mock Data Label */}
+        <div className="mt-4 text-center">
+          <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-orange-100 text-orange-800 border border-orange-200">
+            <Globe className="h-4 w-4 mr-2" />
+            Mock Data - OTA Bookings Overview
+          </span>
+        </div>
+
+        {/* OTA Bookings Section */}
+        <div className="mt-4">
+          <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-5">
+            {mockOTAData.map((ota, index) => (
+              <Card key={ota.name} className="group relative overflow-hidden bg-white/70 backdrop-blur-sm border-0 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-2xl">
+                <div className="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-10 transition-opacity duration-500" style={{ background: `linear-gradient(135deg, ${ota.color}20, ${ota.color}10)` }}></div>
+                <div className="relative">
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <div className="p-3 rounded-xl shadow-lg text-2xl" style={{ backgroundColor: `${ota.color}15` }}>
+                          <span>{ota.icon}</span>
+                        </div>
+                        <CardTitle className="text-xs font-semibold text-slate-700">{ota.name}</CardTitle>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <div className="text-2xl font-bold mb-3" style={{ color: ota.color }}>
+                      {ota.bookings}
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <TrendingUp className="h-3 w-3 text-emerald-500" />
+                      <span className="text-xs font-medium text-slate-600">Bookings</span>
+                    </div>
+                  </CardContent>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+
       </div>
     </div>
   )

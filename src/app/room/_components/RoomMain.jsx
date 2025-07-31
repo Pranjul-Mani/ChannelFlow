@@ -486,9 +486,9 @@ export default function RoomMain() {
   };
 
   return (
-    <div className=" bg-gray-50 min-h-screen text-gray-800">
+    <div className=" bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 min-h-screen text-gray-800 mt-4">
       <div className="max-w-7xl mx-auto">
-        <header className="mb-8 flex items-start justify-between flex-wrap gap-4">
+        <header className="mb-4 flex items-start justify-between flex-wrap gap-4">
           {/* Left: Title */}
           <div>
             <h1 className="text-3xl font-bold text-gray-800">Room Management</h1>

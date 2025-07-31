@@ -68,16 +68,7 @@ const WalkInReservation = ({ isActiveTab = true }) => {
         setCategories(data)
       } catch (apiError) {
         console.warn("API call failed, using mock data:", apiError)
-        // Mock categories data as fallback
-        const mockCategories = [
-          { _id: "1", name: "deluxe (ac)" },
-          { _id: "2", name: "executive suite with balcony" },
-          { _id: "3", name: "bunk room / dormitory" },
-          { _id: "4", name: "standard" },
-          { _id: "5", name: "deluxe (non-ac)" },
-          { _id: "6", name: "family suite" },
-        ]
-        setCategories(mockCategories)
+
       }
     } catch (error) {
       console.error("Error in fetchCategories:", error)
@@ -95,106 +86,6 @@ const WalkInReservation = ({ isActiveTab = true }) => {
       setAllRooms(Array.isArray(roomsArray) ? roomsArray : [])
     } catch (error) {
       console.warn("Failed to fetch all rooms, using mock data:", error)
-      // Mock rooms data as fallback
-      const mockRooms = [
-        {
-          _id: "room1",
-          roomId: "101",
-          category: { _id: "1", name: "deluxe (ac)" },
-          price: 2500,
-          bed: 2,
-          isAvailable: true,
-        },
-        {
-          _id: "room2",
-          roomId: "102",
-          category: { _id: "1", name: "deluxe (ac)" },
-          price: 2500,
-          bed: 2,
-          isAvailable: true,
-        },
-        {
-          _id: "room3",
-          roomId: "201",
-          category: { _id: "2", name: "executive suite with balcony" },
-          price: 4000,
-          bed: 3,
-          isAvailable: true,
-        },
-        {
-          _id: "room4",
-          roomId: "202",
-          category: { _id: "2", name: "executive suite with balcony" },
-          price: 4000,
-          bed: 3,
-          isAvailable: true,
-        },
-        {
-          _id: "room5",
-          roomId: "301",
-          category: { _id: "3", name: "bunk room / dormitory" },
-          price: 800,
-          bed: 4,
-          isAvailable: true,
-        },
-        {
-          _id: "room6",
-          roomId: "302",
-          category: { _id: "3", name: "bunk room / dormitory" },
-          price: 800,
-          bed: 4,
-          isAvailable: true,
-        },
-        {
-          _id: "room7",
-          roomId: "401",
-          category: { _id: "4", name: "standard" },
-          price: 1500,
-          bed: 2,
-          isAvailable: true,
-        },
-        {
-          _id: "room8",
-          roomId: "402",
-          category: { _id: "4", name: "standard" },
-          price: 1500,
-          bed: 2,
-          isAvailable: true,
-        },
-        {
-          _id: "room9",
-          roomId: "501",
-          category: { _id: "5", name: "deluxe (non-ac)" },
-          price: 2000,
-          bed: 2,
-          isAvailable: true,
-        },
-        {
-          _id: "room10",
-          roomId: "502",
-          category: { _id: "5", name: "deluxe (non-ac)" },
-          price: 2000,
-          bed: 2,
-          isAvailable: true,
-        },
-        {
-          _id: "room11",
-          roomId: "601",
-          category: { _id: "6", name: "family suite" },
-          price: 5000,
-          bed: 4,
-          isAvailable: true,
-        },
-        {
-          _id: "room12",
-          roomId: "602",
-          category: { _id: "6", name: "family suite" },
-          price: 5000,
-          bed: 4,
-          isAvailable: true,
-        },
-      ]
-      setAllRooms(mockRooms)
     }
   }
 
@@ -479,25 +370,37 @@ const WalkInReservation = ({ isActiveTab = true }) => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Check-in Date *</label>
-                    <input
-                      type="date"
-                      value={checkInDate}
-                      onChange={(e) => setCheckInDate(e.target.value)}
-                      min={today}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                    />
+                    <div
+                      className="relative w-full px-3 py-2 border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-blue-500 cursor-pointer"
+                      onClick={() => document.getElementById('checkin-date').showPicker?.()}
+                    >
+                      <input
+                        id="checkin-date"
+                        type="date"
+                        value={checkInDate}
+                        onChange={(e) => setCheckInDate(e.target.value)}
+                        min={today}
+                        className="w-full bg-transparent outline-none cursor-pointer"
+                        required
+                      />
+                    </div>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Check-out Date *</label>
-                    <input
-                      type="date"
-                      value={checkOutDate}
-                      onChange={(e) => setCheckOutDate(e.target.value)}
-                      min={checkInDate || today}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                    />
+                    <div
+                      className="relative w-full px-3 py-2 border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-blue-500 cursor-pointer"
+                      onClick={() => document.getElementById('checkout-date').showPicker?.()}
+                    >
+                      <input
+                        id="checkout-date"
+                        type="date"
+                        value={checkOutDate}
+                        onChange={(e) => setCheckOutDate(e.target.value)}
+                        min={checkInDate || today}
+                        className="w-full bg-transparent outline-none cursor-pointer"
+                        required
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -534,7 +437,7 @@ const WalkInReservation = ({ isActiveTab = true }) => {
                           <select
                             value={room.categoryId}
                             onChange={(e) => updateRoom(index, "categoryId", e.target.value)}
-                            className="w-full capitalize px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+                            className="cursor-pointer w-full capitalize px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
                           >
                             <option value="">-Select-</option>
                             {categories.map((category) => (
@@ -549,7 +452,7 @@ const WalkInReservation = ({ isActiveTab = true }) => {
                           <select
                             value={room.rateType}
                             onChange={(e) => updateRoom(index, "rateType", e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+                            className="cursor-pointer w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
                             disabled={!room.categoryId}
                           >
                             <option value="">-Select-</option>
@@ -565,7 +468,7 @@ const WalkInReservation = ({ isActiveTab = true }) => {
                           <select
                             value={room.roomId || ""}
                             onChange={(e) => updateRoom(index, "roomId", e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+                            className="cursor-pointer w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
                             disabled={!room.categoryId || !room.rateType}
                           >
                             <option value="">-Select-</option>
@@ -581,7 +484,7 @@ const WalkInReservation = ({ isActiveTab = true }) => {
                           <select
                             value={room.adults}
                             onChange={(e) => updateRoom(index, "adults", Number.parseInt(e.target.value))}
-                            className="px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+                            className="cursor-pointer px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
                             disabled={!room.roomId}
                           >
                             {Array.from({ length: maxAdults }, (_, i) => i + 1).map((num) => (
@@ -596,7 +499,7 @@ const WalkInReservation = ({ isActiveTab = true }) => {
                           <select
                             value={room.children}
                             onChange={(e) => updateRoom(index, "children", Number.parseInt(e.target.value))}
-                            className="px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+                            className="cursor-pointer px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
                             disabled={!room.roomId}
                           >
                             {Array.from({ length: maxChildren + 1 }, (_, i) => i).map((num) => (
@@ -627,7 +530,7 @@ const WalkInReservation = ({ isActiveTab = true }) => {
                             <button
                               type="button"
                               onClick={() => handlePriceEdit(index)}
-                              className="text-blue-600 hover:text-blue-700 p-1"
+                              className="cursor-pointer text-blue-600 hover:text-blue-700 p-1"
                               disabled={!room.roomId}
                             >
                               <Edit className="w-3 h-3" />
@@ -639,7 +542,7 @@ const WalkInReservation = ({ isActiveTab = true }) => {
                           <button
                             type="button"
                             onClick={() => removeRoom(index)}
-                            className="text-red-600 hover:text-red-700 p-1"
+                            className="cursor-pointer text-red-600 hover:text-red-700 p-1"
                             disabled={selectedRooms.length === 1}
                           >
                             <Trash2 className="w-4 h-4" />
@@ -653,7 +556,7 @@ const WalkInReservation = ({ isActiveTab = true }) => {
                   <button
                     type="button"
                     onClick={addRoom}
-                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm"
+                    className="cursor-pointer flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm"
                   >
                     <Plus className="w-4 h-4" />
                     Add Room
@@ -668,7 +571,7 @@ const WalkInReservation = ({ isActiveTab = true }) => {
                   <button
                     type="button"
                     onClick={addGuest}
-                    className="flex items-center gap-2 px-3 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 text-sm"
+                    className="cursor-pointer flex items-center gap-2 px-3 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 text-sm"
                   >
                     <Plus className="w-4 h-4" />
                     Add Guest
@@ -754,7 +657,7 @@ const WalkInReservation = ({ isActiveTab = true }) => {
                 type="button"
                 onClick={handleSubmit}
                 disabled={loading || selectedRooms.length === 0}
-                className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors shadow-md"
+                className="cursor-pointer w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors shadow-md"
               >
                 {loading ? "Creating Booking..." : "Confirm Booking"}
               </button>

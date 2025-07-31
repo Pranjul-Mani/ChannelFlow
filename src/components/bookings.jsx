@@ -65,10 +65,10 @@ export default function BookingsAdmin() {
     }
   }
 
-  const updateBookingStatus = async (bookingId, newStatus, additionalData = {}) => {
-    setUpdatingBookingId(bookingId)
+  const updateBookingStatus = async (BookingId, newStatus, additionalData = {}) => {
+    setUpdatingBookingId(BookingId)
     try {
-      const response = await fetch(`/api/bookings/${bookingId}`, {
+      const response = await fetch(`/api/bookings/${BookingId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -484,7 +484,7 @@ export default function BookingsAdmin() {
           <button
             onClick={fetchBookings}
             disabled={loading}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-700 text-white rounded-md hover:bg-blue-800 transition-colors disabled:bg-blue-300"
+            className="cursor-pointer flex items-center gap-2 px-4 py-2 bg-blue-700 text-white rounded-md hover:bg-blue-800 transition-colors disabled:bg-blue-300"
           >
             <RefreshCw size={18} className={loading ? "animate-spin" : ""} />
             Refresh
@@ -695,7 +695,7 @@ export default function BookingsAdmin() {
                   {/* Booking Summary */}
                   <div className="space-y-4">
                     <h3 className="text-lg font-semibold text-gray-900 flex items-center">
-                      <Info className="w-5 h-5 mr-2 text-blue-700" /> {/* Changed from indigo */}
+                      <Info className="w-5 h-5 mr-2 text-blue-700" />
                       Booking Summary
                     </h3>
                     <div className="bg-gray-50 p-4 rounded-lg space-y-3">
@@ -742,7 +742,7 @@ export default function BookingsAdmin() {
                         <span className="text-sm font-medium text-gray-700">Total Amount</span>
                         <p className="text-2xl font-bold text-blue-700">
                           {" "}
-                          {/* Changed from indigo */}₹{(selectedBooking.totalAmount || 0).toLocaleString()}
+                          ₹{(selectedBooking.totalAmount || 0).toLocaleString()}
                         </p>
                       </div>
                       {/* Additional Details in Booking Summary */}
@@ -834,7 +834,7 @@ export default function BookingsAdmin() {
                 {/* Room Details */}
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold text-gray-900 flex items-center">
-                    <Bed className="w-5 h-5 mr-2 text-blue-700" /> {/* Changed from indigo */}
+                    <Bed className="w-5 h-5 mr-2 text-blue-700" />
                     Room Details
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

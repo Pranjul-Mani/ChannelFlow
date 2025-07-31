@@ -409,7 +409,7 @@ export default function CalendarPage() {
   const getBookingDuration = (booking) => {
     const checkInDate = new Date(booking.bookingSummary.checkInDate)
     const checkOutDate = new Date(booking.bookingSummary.checkOutDate)
-    const timeDifference = checkOutDate.getTime() - checkInDate.getTime()
+    const timeDifference = checkOutDate.getTime() - checkInDate.getTime() + 1;
     const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24))
     return daysDifference
   }
@@ -429,7 +429,7 @@ export default function CalendarPage() {
           transform: "translateY(-100%)",
         }}
       >
-        <div className="text-sm space-y-3">
+        <div className="text-sm space-y-1">
           <div className="flex items-center gap-2 text-slate-700">
             <User size={14} className="text-indigo-500" />
             <span className="font-semibold">{hoveredBooking.guestInformation.primaryGuest?.name || "N/A"}</span>
@@ -451,6 +451,7 @@ export default function CalendarPage() {
               {bookingDays} {bookingDays === 1 ? "Day" : "Days"}
             </span>
           </div>
+          
           <div className="flex items-center gap-2">
             <div
               className={`w-3 h-3 rounded-full ${getBookingStatusColor(hoveredBooking.status).replace("bg-gradient-to-r", "bg-gradient-to-br")}`}
@@ -574,59 +575,59 @@ export default function CalendarPage() {
   const renderStatisticsCards = () => {
     const stats = memoizedOverallStatistics
 
-    return (
-      <div className="mb-2">
-        <div className="flex gap-4">
-          {/* Available Rooms Card */}
-          <div className="group relative overflow-hidden bg-white/70 backdrop-blur-sm border-0 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-2xl p-3 flex items-center gap-2 min-w-[160px]">
-            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-teal-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            <div className="relative flex items-center gap-3 w-full">
-              <div className="p-2 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl shadow-lg">
-                <Home size={18} className="text-white" />
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold text-emerald-700 uppercase tracking-wide">Available:</span>
-                <span className="text-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-                  {stats.remainingAvailable}
-                </span>
-              </div>
-            </div>
-          </div>
+    // return (
+    //   <div className="mb-2">
+    //     <div className="flex gap-4">
+    //       {/* Available Rooms Card */}
+    //       <div className="group relative overflow-hidden bg-white/70 backdrop-blur-sm border-0 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-2xl p-3 flex items-center gap-2 min-w-[160px]">
+    //         <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-teal-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+    //         <div className="relative flex items-center gap-3 w-full">
+    //           <div className="p-2 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl shadow-lg">
+    //             <Home size={18} className="text-white" />
+    //           </div>
+    //           <div className="flex items-center gap-2">
+    //             <span className="text-xs font-semibold text-emerald-700 uppercase tracking-wide">Available:</span>
+    //             <span className="text-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+    //               {stats.remainingAvailable}
+    //             </span>
+    //           </div>
+    //         </div>
+    //       </div>
           
-          {/* Booked Rooms Card */}
-          <div className="group relative overflow-hidden bg-white/70 backdrop-blur-sm border-0 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-2xl p-3 flex items-center gap-2 min-w-[140px]">
-            <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-orange-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            <div className="relative flex items-center gap-3 w-full">
-              <div className="p-2 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl shadow-lg">
-                <Users size={18} className="text-white" />
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold text-amber-700 uppercase tracking-wide">Booked:</span>
-                <span className="text-xl font-bold bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
-                  {stats.booked}
-                </span>
-              </div>
-            </div>
-          </div>
+    //       {/* Booked Rooms Card */}
+    //       <div className="group relative overflow-hidden bg-white/70 backdrop-blur-sm border-0 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-2xl p-3 flex items-center gap-2 min-w-[140px]">
+    //         <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-orange-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+    //         <div className="relative flex items-center gap-3 w-full">
+    //           <div className="p-2 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl shadow-lg">
+    //             <Users size={18} className="text-white" />
+    //           </div>
+    //           <div className="flex items-center gap-2">
+    //             <span className="text-xs font-semibold text-amber-700 uppercase tracking-wide">Booked:</span>
+    //             <span className="text-xl font-bold bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
+    //               {stats.booked}
+    //             </span>
+    //           </div>
+    //         </div>
+    //       </div>
           
-          {/* Occupancy Card */}
-          <div className="group relative overflow-hidden bg-white/70 backdrop-blur-sm border-0 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-2xl p-3 flex items-center gap-2 min-w-[160px]">
-            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            <div className="relative flex items-center gap-3 w-full">
-              <div className="p-2 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl shadow-lg">
-                <Percent size={18} className="text-white" />
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold text-indigo-700 uppercase tracking-wide">Occupancy:</span>
-                <span className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                  {stats.occupancyPercentage}%
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
+    //       {/* Occupancy Card */}
+    //       <div className="group relative overflow-hidden bg-white/70 backdrop-blur-sm border-0 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-2xl p-3 flex items-center gap-2 min-w-[160px]">
+    //         <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+    //         <div className="relative flex items-center gap-3 w-full">
+    //           <div className="p-2 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl shadow-lg">
+    //             <Percent size={18} className="text-white" />
+    //           </div>
+    //           <div className="flex items-center gap-2">
+    //             <span className="text-xs font-semibold text-indigo-700 uppercase tracking-wide">Occupancy:</span>
+    //             <span className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+    //               {stats.occupancyPercentage}%
+    //             </span>
+    //           </div>
+    //         </div>
+    //       </div>
+    //     </div>
+    //   </div>
+    // )
   }
 
   if (loading) {
