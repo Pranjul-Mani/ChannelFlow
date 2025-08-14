@@ -356,13 +356,13 @@ export default function BookingsAdmin() {
             </div>
           </div>
           <div class="text-right">
-            <h1 class="text-2xl font-bold mb-2">Hotel Moksha</h1>
+            <h1 class="text-2xl font-bold mb-2">Hotel FLow</h1>
             <div class="text-xs leading-tight">
-              <p>Near Geeta Ashram Taxi Stand, Swargashram, Rishikesh,</p>
-              <p>Dehradun, Uttarakhand, 249304,</p>
-              <p>Rishikesh - 249304,Uttarakhand,India</p>
+              <p>Near GT Road</p>
+              <p>Fatehpur , Uttar Pradesh</p>
+              <p>Fatehpur,Uttar Pradesh , India</p>
               <p class="mt-2">bookings@hotel.in</p>
-              <p>Phone : +91 135 244 0040</p>
+              <p>Phone : +91 135 244 2310</p>
             </div>
           </div>
         </div>
@@ -370,7 +370,7 @@ export default function BookingsAdmin() {
       <div class="mb-3">
         <p class="text-sm">Dear ${primaryGuestName},</p>
         <br>
-        <p class="text-sm">Thank you for choosing Hotel Moksha for your stay. We are pleased to inform you that your reservation request is CONFIRMED and your reservation details are as follows.</p>
+        <p class="text-sm">Thank you for choosing Hotel Flow for your stay. We are pleased to inform you that your reservation request is CONFIRMED and your reservation details are as follows.</p>
       </div>
       <!-- Booking Details -->
       <div class="mb-4">
@@ -394,10 +394,9 @@ export default function BookingsAdmin() {
       <div class="mb-4">
         <h3 class="text-lg font-bold mb-3">Guest Information</h3>
         <div class="grid grid-cols-2 gap-2 text-sm">
-          ${
-            booking.guestInformation?.guests
-              ?.map(
-                (guest, index) => `
+          ${booking.guestInformation?.guests
+        ?.map(
+          (guest, index) => `
             <div class="border border-gray-300 p-2">
               <div class="font-medium">Guest ${index + 1}: ${guest.name || "N/A"}</div>
               <div class="text-xs">Age: ${guest.age || "N/A"}</div>
@@ -405,19 +404,18 @@ export default function BookingsAdmin() {
               ${guest.phone ? `<div class="text-xs">Phone: ${guest.phone}</div>` : ""}
             </div>
           `,
-              )
-              .join("") || "<p>No guest information available</p>"
-          }
+        )
+        .join("") || "<p>No guest information available</p>"
+      }
         </div>
       </div>
       <!-- Room Details -->
       <div class="mb-4">
         <h3 class="text-lg font-bold mb-3">Room Details</h3>
         <div class="grid grid-cols-2 gap-2 text-sm">
-          ${
-            booking.roomDetails
-              ?.map(
-                (room, index) => `
+          ${booking.roomDetails
+        ?.map(
+          (room, index) => `
             <div class="border border-gray-300 p-2">
               <div class="font-medium">${room.roomInfo?.name || "Room"} (#${room.roomInfo?.roomNumber || "N/A"})</div>
               <div class="text-xs">${room.roomInfo?.category || "Standard"}</div>
@@ -425,9 +423,9 @@ export default function BookingsAdmin() {
               <div class="text-xs">Rooms: ${room.bookingInfo?.numberOfRooms || 1}</div>
             </div>
           `,
-              )
-              .join("") || "<p>No room details available</p>"
-          }
+        )
+        .join("") || "<p>No room details available</p>"
+      }
         </div>
       </div>
       <!-- Total Amount -->
@@ -445,7 +443,7 @@ export default function BookingsAdmin() {
           <div class="font-bold text-sm mb-1">Hotel Policy</div>
           <div class="policy-content text-xs">
             <p><strong>Late Check-Out Policy</strong></p>
-            <p>At Hotel Moksha, We strive to accommodate our guests needs and ensure a comfortable stay. Our standard check-out time is 11:00 am, and check-in time is 1:00 pm.</p>
+            <p>At Hotel Flow, We strive to accommodate our guests needs and ensure a comfortable stay. Our standard check-out time is 11:00 am, and check-in time is 1:00 pm.</p>
                         <p class="font-medium mt-2 mb-1">Late Check-Out Guidelines:</p>
             <ol class="list-decimal pl-4">
               <li><strong>Complimentary Late Check-Out (Up to 1 Hour):</strong> Guests may request a late check-out of up to 1 hour beyond the standard check-out time. This is subject to prior intimation and confirmation from the hotel and will only be granted if the room has not been pre-booked for an incoming guest.</li>
@@ -456,7 +454,7 @@ export default function BookingsAdmin() {
               </li>
             </ol>
                         <p class="mt-2"><strong>Important Notes:</strong> Late check-out requests are subject to availability and must be confirmed by the front desk in advance. Charges will be applied automatically if the room is occupied beyond the permitted time without prior confirmation. We recommend informing the front desk as early as possible to facilitate your request. For any assistance or inquiries regarding late check-out, please contact our reception desk.</p>
-            <p class="mt-1">Thank you for choosing Hotel Moksha. We hope you enjoy your stay!</p>
+            <p class="mt-1">Thank you for choosing Hotel Flow. We hope you enjoy your stay!</p>
           </div>
         </div>
         <div class="bg-blue-50 p-2 mb-3 text-xs text-center">
@@ -467,8 +465,8 @@ export default function BookingsAdmin() {
           <p class="mb-1">This email has been sent from an automated system - please do not reply to it.</p>
           <p class="font-bold mb-1">**** FOR ANY FURTHER QUERY ****</p>
           <p><strong>Contact us by Email Id:</strong> bookings@hotel.in</p>
-          <p><strong>Phone NO:</strong> +91 135 244 0040</p>
-          <p class="mt-1">Address: Near Geeta Ashram Taxi Stand, Swargashram, Rishikesh, Dehradun, Uttarakhand, 249304, Rishikesh-249304, Uttarakhand, India</p>
+          <p><strong>Phone NO:</strong> +91 135 244 2310</p>
+          <p class="mt-1">Address: Near GT Road,Fatehpur-212601,Uttar Pradesh, India</p>
         </div>
       </div>
     </body>
@@ -514,39 +512,36 @@ export default function BookingsAdmin() {
                 <button
                   key={status}
                   onClick={() => setStatusFilter(status)}
-                  className={`px-4 py-2 rounded-md text-sm cursor-pointer font-medium flex items-center gap-2 transition-all ${
-                    isActive
-                      ? `text-white ${
-                          status === "pending"
-                            ? "bg-yellow-500"
-                            : status === "confirmed"
-                              ? "bg-blue-500"
-                              : status === "checked-in"
-                                ? "bg-sky-500" // Changed from indigo
-                                : status === "checked-out"
-                                  ? "bg-purple-500"
-                                  : status === "completed"
-                                    ? "bg-green-500"
-                                    : status === "cancelled"
-                                      ? "bg-red-500"
-                                      : "bg-gray-800"
-                        }`
-                      : `hover:bg-opacity-90 ${
-                          status === "pending"
-                            ? "bg-yellow-50 text-yellow-700"
-                            : status === "confirmed"
-                              ? "bg-blue-50 text-blue-700"
-                              : status === "checked-in"
-                                ? "bg-sky-50 text-sky-700" // Changed from indigo
-                                : status === "checked-out"
-                                  ? "bg-purple-50 text-purple-700"
-                                  : status === "completed"
-                                    ? "bg-green-50 text-green-700"
-                                    : status === "cancelled"
-                                      ? "bg-red-50 text-red-700"
-                                      : "bg-gray-100 text-gray-700"
-                        }`
-                  }`}
+                  className={`px-4 py-2 rounded-md text-sm cursor-pointer font-medium flex items-center gap-2 transition-all ${isActive
+                      ? `text-white ${status === "pending"
+                        ? "bg-yellow-500"
+                        : status === "confirmed"
+                          ? "bg-blue-500"
+                          : status === "checked-in"
+                            ? "bg-sky-500" // Changed from indigo
+                            : status === "checked-out"
+                              ? "bg-purple-500"
+                              : status === "completed"
+                                ? "bg-green-500"
+                                : status === "cancelled"
+                                  ? "bg-red-500"
+                                  : "bg-gray-800"
+                      }`
+                      : `hover:bg-opacity-90 ${status === "pending"
+                        ? "bg-yellow-50 text-yellow-700"
+                        : status === "confirmed"
+                          ? "bg-blue-50 text-blue-700"
+                          : status === "checked-in"
+                            ? "bg-sky-50 text-sky-700" // Changed from indigo
+                            : status === "checked-out"
+                              ? "bg-purple-50 text-purple-700"
+                              : status === "completed"
+                                ? "bg-green-50 text-green-700"
+                                : status === "cancelled"
+                                  ? "bg-red-50 text-red-700"
+                                  : "bg-gray-100 text-gray-700"
+                      }`
+                    }`}
                 >
                   {status === "checked-in"
                     ? "Checked In"
@@ -554,9 +549,8 @@ export default function BookingsAdmin() {
                       ? "Checked Out"
                       : status.charAt(0).toUpperCase() + status.slice(1)}
                   <span
-                    className={`text-xs px-2 py-1 rounded-full ${
-                      isActive ? "bg-white bg-opacity-30 text-gray-800" : "bg-gray-200 text-gray-800"
-                    }`}
+                    className={`text-xs px-2 py-1 rounded-full ${isActive ? "bg-white bg-opacity-30 text-gray-800" : "bg-gray-200 text-gray-800"
+                      }`}
                   >
                     {count}
                   </span>
@@ -612,7 +606,7 @@ export default function BookingsAdmin() {
                           : booking.status === "checked-out"
                             ? "Checked Out"
                             : (booking.status || "unknown").charAt(0).toUpperCase() +
-                              (booking.status || "unknown").slice(1)}
+                            (booking.status || "unknown").slice(1)}
                       </span>
                     </div>
                     <div className="space-y-2 mb-4">
@@ -734,7 +728,7 @@ export default function BookingsAdmin() {
                               : selectedBooking.status === "checked-out"
                                 ? "Checked Out"
                                 : (selectedBooking.status || "unknown").charAt(0).toUpperCase() +
-                                  (selectedBooking.status || "unknown").slice(1)}
+                                (selectedBooking.status || "unknown").slice(1)}
                           </span>
                         </div>
                       </div>
@@ -800,7 +794,7 @@ export default function BookingsAdmin() {
                     <div className="bg-gray-50 p-4 rounded-lg">
                       <div className="space-y-3 max-h-64 overflow-y-auto">
                         {selectedBooking.guestInformation?.guests &&
-                        selectedBooking.guestInformation.guests.length > 0 ? (
+                          selectedBooking.guestInformation.guests.length > 0 ? (
                           selectedBooking.guestInformation.guests.map((guest, index) => (
                             <div key={index} className="bg-white p-3 rounded border">
                               <div className="flex justify-between items-start mb-2">

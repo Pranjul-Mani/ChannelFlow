@@ -2,7 +2,7 @@
 import nodemailer from 'nodemailer';
 
 const transporter = nodemailer.createTransport({
-    service: 'gmail', // or your email service
+    service: 'gmail',
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASSWORD,
@@ -95,13 +95,13 @@ function generateEmailContent(booking) {
             </div>
           </div>
           <div class="right-section">
-            <h1 style="margin: 0 0 8px 0; font-size: 24px; font-weight: bold;">Hotel Moksha</h1>
+            <h1 style="margin: 0 0 8px 0; font-size: 24px; font-weight: bold;">Hotel Flow</h1>
             <div style="font-size: 11px; line-height: 1.3;">
-              <p style="margin: 0;">Near Geeta Ashram Taxi Stand, Swargashram, Rishikesh,</p>
-              <p style="margin: 0;">Dehradun, Uttarakhand, 249304,</p>
-              <p style="margin: 0 0 8px 0;">Rishikesh - 249304,Uttarakhand,India</p>
+              <p style="margin: 0;">Near GT Road</p>
+              <p style="margin: 0;">Fatehpur-212601,Uttar Pradesh</p>
+              <p style="margin: 0 0 8px 0;">Fatehpur-212601,Uttar Pradesh,India</p>
               <p style="margin: 0;">bookings@hotel.in</p>
-              <p style="margin: 0;">Phone : +91 135 244 0040</p>
+              <p style="margin: 0;">Phone : +91 135 244 2130</p>
             </div>
           </div>
         </div>
@@ -110,7 +110,7 @@ function generateEmailContent(booking) {
       <div class="content">
         <p style="margin: 0 0 8px 0;">Dear ${primaryGuestName},</p>
         <br>
-        <p style="margin-bottom: 15px;">Thank you for choosing Hotel Moksha for your stay. We are pleased to inform you that your reservation request is CONFIRMED and your reservation details are as follows.</p>
+        <p style="margin-bottom: 15px;">Thank you for choosing Hotel Flow for your stay. We are pleased to inform you that your reservation request is CONFIRMED and your reservation details are as follows.</p>
         
         <div class="booking-details">
           <h3 style="margin: 0 0 12px 0; font-size: 16px;">Booking Details</h3>
@@ -171,7 +171,7 @@ function generateEmailContent(booking) {
             <div class="policy-title">Hotel Policy</div>
             <div class="policy-content">
               <p><strong>Late Check-Out Policy</strong></p>
-              <p>At Hotel Moksha, We strive to accommodate our guests needs and ensure a comfortable stay. Our standard check-out time is 11:00 am, and check-in time is 1:00 pm.</p>
+              <p>At Hotel Flow, We strive to accommodate our guests needs and ensure a comfortable stay. Our standard check-out time is 11:00 am, and check-in time is 1:00 pm.</p>
               
               <p><strong>Late Check-Out Guidelines:</strong></p>
               <ol>
@@ -185,7 +185,7 @@ function generateEmailContent(booking) {
               
               <p><strong>Important Notes:</strong> Late check-out requests are subject to availability and must be confirmed by the front desk in advance. Charges will be applied automatically if the room is occupied beyond the permitted time without prior confirmation. We recommend informing the front desk as early as possible to facilitate your request. For any assistance or inquiries regarding late check-out, please contact our reception desk.</p>
               
-              <p>Thank you for choosing Hotel Moksha. We hope you enjoy your stay!</p>
+              <p>Thank you for choosing Hotel Flow. We hope you enjoy your stay!</p>
             </div>
           </div>
 
@@ -198,14 +198,14 @@ function generateEmailContent(booking) {
             <p style="margin-bottom: 6px;">This email has been sent from an automated system - please do not reply to it.</p>
             <p style="margin-bottom: 6px;"><strong>**** FOR ANY FURTHER QUERY ****</strong></p>
             <p style="margin-bottom: 4px;"><strong>Contact us by Email Id:</strong> bookings@hotel.in</p>
-            <p style="margin-bottom: 4px;"><strong>Phone NO:</strong> +91 135 244 0040</p>
-            <p style="margin: 0;"><strong>Address:</strong> Near Geeta Ashram Taxi Stand, Swargashram, Rishikesh, Dehradun, Uttarakhand, 249304, Rishikesh-249304, Uttarakhand, India</p>
+            <p style="margin-bottom: 4px;"><strong>Phone NO:</strong> +91 135 244 1230</p>
+            <p style="margin: 0;"><strong>Address:</strong> Near GT Road, India</p>
           </div>
         </div>
       </div>
 
       <div class="footer">
-        <p style="margin: 0;">&copy; 2025 Hotel Moksha. All rights reserved.</p>
+        <p style="margin: 0;">&copy; 2025 Hotel Flow. All rights reserved.</p>
       </div>
     </body>
     </html>
