@@ -4,7 +4,7 @@ import "./globals.css";
 import { AuthProvider } from '../lib/AuthContext';
 
 export const metadata = {
-  title: "Channel Manager",
+  title: "ChannelFlow",
   description: "",
   icons: {
     icon: "/logo.png", 
