@@ -6,7 +6,7 @@ import { Globe, ChevronDown, User, LogOut, Users } from "lucide-react";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "../lib/AuthContext"; // Adjust path as needed
+import { useAuth } from "../lib/AuthContext";
 
 export default function Navbar() {
     const router = useRouter();
@@ -64,7 +64,7 @@ export default function Navbar() {
         `}
             >
                 {/* Logo Section */}
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 ml-5">
                     <div className="w-8 h-8 bg-cyan-400 rounded-lg flex items-center justify-center">
                         <img src="/logo.png" alt="logo" />
                     </div>
@@ -75,15 +75,18 @@ export default function Navbar() {
 
                 {/* Navigation and Auth Section */}
                 <div className="flex items-center space-x-8">
-                    <nav className="hidden md:flex items-center space-x-6">
-                        <Link href="#features" className="text-slate-300 hover:text-white transition-colors duration-200">
-                            Features
+                    <nav className="hidden md:flex items-center space-x-8 mr-20">
+                        <Link href="/" className="text-xl text-slate-300 hover:text-white transition-colors duration-200">
+                            Home
                         </Link>
-                        {/* <Link href="#dashboard" className="text-slate-300 hover:text-white transition-colors duration-200">
+                        <Link href="dashboard" className="text-xl text-slate-300 hover:text-white transition-colors duration-200">
                             Dashboard
-                        </Link> */}
-                        <Link href="#pricing" className="text-slate-300 hover:text-white transition-colors duration-200">
+                        </Link>
+                        <Link href="pricing" className="text-xl text-slate-300 hover:text-white transition-colors duration-200">
                             Pricing
+                        </Link>
+                        <Link href="contact" className="text-xl text-slate-300 hover:text-white transition-colors duration-200">
+                            Contact
                         </Link>
                     </nav>
 
@@ -102,7 +105,7 @@ export default function Navbar() {
                                         {user?.name?.charAt(0).toUpperCase() || 'U'}
                                     </div>
                                     <div className="hidden sm:block text-left">
-                                        <p className="text-sm font-medium text-white">{user?.name || 'User'}</p>
+                                        <p className="text-xl font-medium text-white">{user?.name || 'User'}</p>
 
                                     </div>
                                     <ChevronDown className={`h-4 w-4 text-slate-400 transition-transform ${isUserDropdownOpen ? 'rotate-180' : ''}`} />

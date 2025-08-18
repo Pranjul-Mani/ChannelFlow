@@ -77,7 +77,7 @@ const HotelChannelManager = () => {
   }
 
   if (!user) {
-    return null // Will redirect in useEffect
+    return null
   }
 
   return (
@@ -88,9 +88,22 @@ const HotelChannelManager = () => {
           <div className="flex items-center justify-between">
             {/* Title */}
             <Link href="/">
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900 ml-10">ChannelFlow</h1>
-              </div>
+              <button className="cursor-pointer flex items-center gap-2 px-4 py-2 ml-20 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg">
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+                <span>Back To Home</span>
+              </button>
             </Link>
 
             {/* Glass Navigation - Desktop */}

@@ -16,11 +16,6 @@ const HotelChannelManager = () => {
   // Mock data for channels
   const [channels] = useState([])
 
-  // const [roomTypes] = useState([
-  //   { id: 1, name: "Deluxe Room", inventory: 15, price: 120, channels: ["Agoda", "Booking.com", "MakeMyTrip"] },
-  //   { id: 2, name: "Suite", inventory: 8, price: 200, channels: ["Agoda", "Booking.com", "Expedia"] },
-  //   { id: 3, name: "Standard Room", inventory: 25, price: 80, channels: ["All Channels"] },
-  // ])
 
   return React.createElement(
     "div",
